@@ -61,6 +61,7 @@ void saveReport(const std::string filename, VulkanPhysicalDevice physicalDevice)
     json["instance"]["layers"] = instance.getLayers();
 
     json["extensions"] = physicalDevice.getExtensions();
+    json["extended"] = physicalDevice.getExtended();
     json["features"] = physicalDevice.getFeatures();
     json["formats"] = physicalDevice.getFormats();
     json["layers"] = physicalDevice.getLayers();

@@ -75,6 +75,42 @@ nlohmann::json VulkanPhysicalDevice::getExtensions()
     return jsonArray;
 }
 
+// Get extension properties and features from auto-generated source
+nlohmann::json VulkanPhysicalDevice::getExtended()
+{
+    nlohmann::json json;
+
+    // Check if context checks are needed (app should close if fnptr can't be fetched)
+
+    if (vulkanContext.vkGetPhysicalDeviceFeatures2KHR) {
+        readExtendedFeatures();
+
+        auto jsonArray = nlohmann::json::array();
+        for (auto& extendedFeature : features2) {
+            jsonArray.push_back(
+                {
+                    { "extension", extendedFeature.extension },
+                    { "name", extendedFeature.name },
+                    { "supported", extendedFeature.supported ? true : false },
+                }
+            );
+        }
+        json["devicefeatures2"] = jsonArray;
+    }
+
+    if (vulkanContext.vkGetPhysicalDeviceProperties2KHR) {
+        readExtendedProperties();
+
+        auto jsonArray = nlohmann::json::array();
+        for (auto& extendedProperty : properties2) {
+            jsonArray.push_back(extendedProperty.value);
+        }
+        json["deviceproperties2"] = jsonArray;
+    }
+
+    return json;
+}
+
 nlohmann::json VulkanPhysicalDevice::getFeatures()
 {
     VkPhysicalDeviceFeatures features{};

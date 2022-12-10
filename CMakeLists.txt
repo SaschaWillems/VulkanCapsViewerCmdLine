@@ -18,4 +18,4 @@ add_executable (VulkanCapsViewerCmdLine ${SOURCE} ${HEADERS})
 
 target_link_libraries(VulkanCapsViewerCmdLine ${Vulkan_LIBRARY})
 
-# TODO: Add tests and install targets if needed.
+target_compile_definitions(VulkanCapsViewerCmdLine PRIVATE VK_ENABLE_BETA_EXTENSIONS)

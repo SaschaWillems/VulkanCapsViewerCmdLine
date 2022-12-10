@@ -23,6 +23,7 @@
 #include "nlohmann/json.hpp"
 #include "vulkan/vulkan.h"
 #include "VulkanContext.h"
+#include "VulkanDeviceInfoExtensions.h"
 #include "Utils.h"
 
 struct VulkanFormatInfo
@@ -32,19 +33,17 @@ struct VulkanFormatInfo
     bool supported;
 };
 
-class VulkanPhysicalDevice
+class VulkanPhysicalDevice : public VulkanDeviceInfoExtensions
 {
 public:
-
-    VkPhysicalDevice handle = VK_NULL_HANDLE;
     VkPhysicalDeviceProperties properties{};
-    std::vector<VkExtensionProperties> extensions;
 
     VulkanPhysicalDevice(VkPhysicalDevice handle);
     bool extensionSupported(const char* extensionName);
     bool vulkanVersionSupported(uint32_t major, uint32_t minor);
 
     nlohmann::json getExtensions();
+    nlohmann::json getExtended();
     nlohmann::json getFeatures();
     nlohmann::json getFormats();
     nlohmann::json getLayers();
