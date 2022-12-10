@@ -311,16 +311,17 @@ nlohmann::json VulkanPhysicalDevice::getProperties()
         { "deviceID", properties.deviceID },
         { "deviceType", properties.deviceType },
         { "deviceTypeText", Utils::physicalDeviceTypeString(properties.deviceType) },
+        { "pipelineCacheUUID", properties.pipelineCacheUUID },
+        {
+            "sparseProperties", {
+                { "residencyStandard2DBlockShape", properties.sparseProperties.residencyStandard2DBlockShape },
+                { "residencyStandard2DMultisampleBlockShape", properties.sparseProperties.residencyStandard2DMultisampleBlockShape },
+                { "residencyStandard3DBlockShape", properties.sparseProperties.residencyStandard3DBlockShape },
+                { "residencyAlignedMipSize", properties.sparseProperties.residencyAlignedMipSize },
+                { "residencyNonResidentStrict", properties.sparseProperties.residencyNonResidentStrict },
+            }
+        },
     };
-
-    // @todo
-    // Sparse residency properties
-    //sparseProperties.clear();
-    //sparseProperties["residencyStandard2DBlockShape"] = props.sparseProperties.residencyStandard2DBlockShape;
-    //sparseProperties["residencyStandard2DMultisampleBlockShape"] = props.sparseProperties.residencyStandard2DMultisampleBlockShape;
-    //sparseProperties["residencyStandard3DBlockShape"] = props.sparseProperties.residencyStandard3DBlockShape;
-    //sparseProperties["residencyAlignedMipSize"] = props.sparseProperties.residencyAlignedMipSize;
-    //sparseProperties["residencyNonResidentStrict"] = props.sparseProperties.residencyNonResidentStrict;
 
     if (vulkanVersionSupported(1, 1)) {
         VkPhysicalDeviceProperties2KHR deviceProps2{};
@@ -329,22 +330,12 @@ nlohmann::json VulkanPhysicalDevice::getProperties()
         extProps.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_SUBGROUP_PROPERTIES;
         deviceProps2.pNext = &extProps;
         vulkanContext.vkGetPhysicalDeviceProperties2KHR(handle, &deviceProps2);
-        //subgroupProperties["subgroupSize"] = extProps.subgroupSize;
-        //subgroupProperties["supportedStages"] = extProps.supportedStages;
-        //subgroupProperties["supportedOperations"] = extProps.supportedOperations;
-        //subgroupProperties["quadOperationsInAllStages"] = QVariant(bool(extProps.quadOperationsInAllStages));
-        // VK_KHR_maintenance3
-        if (extensionSupported(VK_KHR_MAINTENANCE3_EXTENSION_NAME)) {
-            const char* extName(VK_KHR_MAINTENANCE3_EXTENSION_NAME);
-            VkPhysicalDeviceProperties2KHR deviceProps2{};
-            VkPhysicalDeviceMaintenance3Properties extProps{};
-            extProps.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_MAINTENANCE_3_PROPERTIES;
-            deviceProps2.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_PROPERTIES_2_KHR;
-            deviceProps2.pNext = &extProps;
-            vulkanContext.vkGetPhysicalDeviceProperties2KHR(handle, &deviceProps2);
-            //properties2.push_back(Property2("maxPerSetDescriptors", QVariant::fromValue(extProps.maxPerSetDescriptors), extName));
-            //properties2.push_back(Property2("maxMemoryAllocationSize", QVariant::fromValue(extProps.maxMemoryAllocationSize), extName));
-        }
+        json["subgroupProperties"] = {
+            { "subgroupSize", extProps.subgroupSize },
+            { "supportedStages", extProps.supportedStages },
+            { "supportedOperations", extProps.supportedOperations },
+            { "quadOperationsInAllStages", extProps.quadOperationsInAllStages ? true : false },
+        };
     }
     return json;
 }

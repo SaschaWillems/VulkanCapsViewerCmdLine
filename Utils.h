@@ -60,5 +60,28 @@ namespace Utils
         return ss.str();
     }
 
+	template<typename Number>
+	inline std::string toHexString(const Number number)
+	{
+		std::stringstream ss;
+		ss << std::hex << std::showbase << number;
+		return ss.str();
+	}
+
+	inline std::string physicalDeviceTypeString(const VkPhysicalDeviceType type)
+	{
+		switch (type)
+		{
+#define STR(r) case VK_PHYSICAL_DEVICE_TYPE_##r: return #r
+			STR(OTHER);
+			STR(INTEGRATED_GPU);
+			STR(DISCRETE_GPU);
+			STR(VIRTUAL_GPU);
+			STR(CPU);
+#undef STR
+		default: return "UNKNOWN_DEVICE_TYPE (" + toHexString(type) + ")";
+		}
+	}
+
 };
 
