@@ -302,15 +302,15 @@ nlohmann::json VulkanPhysicalDevice::getProperties()
 
     nlohmann::json json = {
         { "deviceName", properties.deviceName },
-        { "driverVersion",properties.driverVersion },
-        //"driverVersionText", QString::fromStdString(getDriverVersion() },
+        { "driverVersion", properties.driverVersion },
+        { "driverVersionText", getDriverVersion() },
         { "apiVersion", properties.apiVersion },
-        //"apiVersionText", QString::fromStdString(vulkanResources::versionToString(props.apiVersion) },
+        { "apiVersionText", Utils::versionToString(properties.apiVersion) },
         { "headerversion", VK_HEADER_VERSION },
         { "vendorID", properties.vendorID },
         { "deviceID", properties.deviceID },
         { "deviceType", properties.deviceType },
-        //"deviceTypeText",  QString::fromStdString(vulkanResources::physicalDeviceTypeString(props.deviceType) },
+        { "deviceTypeText", Utils::physicalDeviceTypeString(properties.deviceType) },
     };
 
     // @todo
