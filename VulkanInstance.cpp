@@ -93,7 +93,7 @@ bool VulkanInstance::create()
     // Get instance extensions
     uint32_t extCount;
     vkRes = vkEnumerateInstanceExtensionProperties(nullptr, &extCount, nullptr);
-    std::vector<VkExtensionProperties> extensions(extCount);
+    extensions.resize(extCount);
     vkRes = vkEnumerateInstanceExtensionProperties(nullptr, &extCount, &extensions.front());
 
     // Check support for new property and feature queries
