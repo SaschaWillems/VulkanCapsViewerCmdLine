@@ -488,34 +488,8 @@ nlohmann::json VulkanPhysicalDevice::getCore11()
     // Core 1.1 features and properties are a bit more complicated than 1.2 and newer
     // Dedicated structures for those have only been introduced in Vulkan 1.2
 
-    /*
-    // @todo
-    VkPhysicalDeviceProperties2KHR deviceProps2{};
-    deviceProps2.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_PROPERTIES_2_KHR;
-    VkPhysicalDeviceSubgroupProperties extProps{};
-    extProps.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_SUBGROUP_PROPERTIES;
-    deviceProps2.pNext = &extProps;
-    vulkanContext.vkGetPhysicalDeviceProperties2KHR(handle, &deviceProps2);
-    //subgroupProperties["subgroupSize"] = extProps.subgroupSize;
-    //subgroupProperties["supportedStages"] = extProps.supportedStages;
-    //subgroupProperties["supportedOperations"] = extProps.supportedOperations;
-    //subgroupProperties["quadOperationsInAllStages"] = QVariant(bool(extProps.quadOperationsInAllStages));
-    // VK_KHR_maintenance3
-    if (extensionSupported(VK_KHR_MAINTENANCE3_EXTENSION_NAME)) {
-        const char* extName(VK_KHR_MAINTENANCE3_EXTENSION_NAME);
-        VkPhysicalDeviceProperties2KHR deviceProps2{};
-        VkPhysicalDeviceMaintenance3Properties extProps{};
-        extProps.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_MAINTENANCE_3_PROPERTIES;
-        deviceProps2.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_PROPERTIES_2_KHR;
-        deviceProps2.pNext = &extProps;
-        vulkanContext.vkGetPhysicalDeviceProperties2KHR(handle, &deviceProps2);
-        //properties2.push_back(Property2("maxPerSetDescriptors", QVariant::fromValue(extProps.maxPerSetDescriptors), extName));
-        //properties2.push_back(Property2("maxMemoryAllocationSize", QVariant::fromValue(extProps.maxMemoryAllocationSize), extName));
-    }
-    */
     nlohmann::json json;
 
-    // Vulkan 1.2 introduced dedicated structures for properties promoted to core in 1.1 and 1.2
     VkPhysicalDeviceProperties2KHR deviceProps2{};
     deviceProps2.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_PROPERTIES_2_KHR;
 
@@ -540,6 +514,29 @@ nlohmann::json VulkanPhysicalDevice::getCore11()
         { "protectedNoFault", coreProps11.protectedNoFault },
         { "maxPerSetDescriptors", coreProps11.maxPerSetDescriptors },
         { "maxMemoryAllocationSize", coreProps11.maxMemoryAllocationSize },
+    };
+
+    VkPhysicalDeviceFeatures2KHR deviceFeatures2{};
+    deviceFeatures2.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_FEATURES_2_KHR;
+
+    VkPhysicalDeviceVulkan11Features coreFeatures11{};
+    coreFeatures11.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_VULKAN_1_1_FEATURES;
+    deviceFeatures2.pNext = &coreFeatures11;
+    vulkanContext.vkGetPhysicalDeviceFeatures2KHR(handle, &deviceFeatures2);
+
+    json["features"] = {
+        { "storageBuffer16BitAccess", coreFeatures11.storageBuffer16BitAccess },
+        { "uniformAndStorageBuffer16BitAccess", coreFeatures11.uniformAndStorageBuffer16BitAccess },
+        { "storagePushConstant16", coreFeatures11.storagePushConstant16 },
+        { "storageInputOutput16", coreFeatures11.storageInputOutput16 },
+        { "multiview", coreFeatures11.multiview },
+        { "multiviewGeometryShader", coreFeatures11.multiviewGeometryShader },
+        { "multiviewTessellationShader", coreFeatures11.multiviewTessellationShader },
+        { "variablePointersStorageBuffer", coreFeatures11.variablePointersStorageBuffer },
+        { "variablePointers", coreFeatures11.variablePointers },
+        { "protectedMemory", coreFeatures11.protectedMemory },
+        { "samplerYcbcrConversion", coreFeatures11.samplerYcbcrConversion },
+        { "shaderDrawParameters", coreFeatures11.shaderDrawParameters },
     };
 
     return json;

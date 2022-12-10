@@ -68,7 +68,8 @@ void saveReport(const std::string filename, VulkanPhysicalDevice physicalDevice)
     json["memory"] = physicalDevice.getMemoryTypes();
     json["properties"] = physicalDevice.getProperties();
     json["queues"] = physicalDevice.getQueueFamilies();
-    if (physicalDevice.vulkanVersionSupported(1, 1)) {
+    if (physicalDevice.vulkanVersionSupported(1, 2)) {
+        // Check against 1.2 is correct, as the dedicated structs for 1.1 have been added with 1.2 only
         json["core11"] = physicalDevice.getCore11();
     }
     if (physicalDevice.vulkanVersionSupported(1, 2)) {
