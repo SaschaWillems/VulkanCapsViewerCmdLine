@@ -19,7 +19,6 @@
 
 #include "VulkanCapsViewerCmdLine.h"
 
-
 VulkanInstance instance;
 
 const std::string appVersion = "1.0";
@@ -52,9 +51,9 @@ std::string getOsVersion() {
                     return "7";
                 }
             }
-            return "unknown";
         }
     }
+    return "unknown";
 }
 #endif
 bool initVulkan()
