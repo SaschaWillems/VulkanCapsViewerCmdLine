@@ -25,6 +25,9 @@
 #include <string>
 #include <sstream>
 #include <fstream>
+#ifdef _WIN32
+#include <Windows.h>
+#endif
 
 #include "nlohmann/json.hpp"
 

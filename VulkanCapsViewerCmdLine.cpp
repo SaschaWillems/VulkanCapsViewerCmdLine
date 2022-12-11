@@ -25,6 +25,38 @@ VulkanInstance instance;
 const std::string appVersion = "1.0";
 const std::string reportVersion = "3.2";
 
+#ifdef _WIN32
+std::string getOsVersion() {
+    HMODULE hDll = LoadLibrary(TEXT("Ntdll.dll"));
+    typedef NTSTATUS(CALLBACK* RTLGETVERSION) (PRTL_OSVERSIONINFOW lpVersionInformation);
+    RTLGETVERSION pRtlGetVersion;
+    pRtlGetVersion = (RTLGETVERSION)GetProcAddress(hDll, "RtlGetVersion");
+    if (pRtlGetVersion) {
+        RTL_OSVERSIONINFOW ovi = { 0 };
+        ovi.dwOSVersionInfoSize = sizeof(ovi);
+        NTSTATUS ntStatus = pRtlGetVersion(&ovi);
+        if (ntStatus == 0) {
+            if (ovi.dwMajorVersion == 10) {
+                if (ovi.dwBuildNumber >= 22000) {
+                    return "11";
+                }
+                return "10";
+            }
+            if (ovi.dwMajorVersion == 6) {
+                switch (ovi.dwMinorVersion) {
+                case 3:
+                    return "8.1";
+                case 2:
+                    return "8";
+                case 1:
+                    return "7";
+                }
+            }
+            return "unknown";
+        }
+    }
+}
+#endif
 bool initVulkan()
 {
     if (!instance.create()) {
@@ -51,12 +83,36 @@ bool initVulkan()
     return true;
 }
 
+// The environment node contains information on the application (versions, etc.) and the operating system
+nlohmann::json getEnvironment()
+{
+    nlohmann::json json = {
+        { "appversion", appVersion },
+        { "appvariant", "commandline" },
+        { "comment", "" },
+        { "submitter", "" },
+        { "reportversion", reportVersion},
+        // @tdodo: os architecture, version, name for os
+    };
+
+#ifdef _WIN32
+    json["name"] = "windows";
+    json["version"] = getOsVersion();
+#ifdef _WIN64
+    json["architecture"] = "x86_64";
+#else
+    json["architecture"] = "i386";
+#endif
+#endif
+    return json;
+}
+
 void saveReport(const std::string filename, VulkanPhysicalDevice physicalDevice)
 {
     nlohmann::json json;
 
-    //json["environment"] = getEnvironment();
-
+    json["environment"] = getEnvironment();
+ 
     json["instance"]["extensions"] = instance.getExtensions();
     json["instance"]["layers"] = instance.getLayers();
 
