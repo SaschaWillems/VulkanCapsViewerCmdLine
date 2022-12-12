@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-16.04
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           submodules: "recursive"
 
@@ -30,9 +30,23 @@ jobs:
     steps:
       - uses: ilammy/msvc-dev-cmd@v1
 
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           submodules: "recursive"
+
+      - name: Cache Vulkan SDK
+        id: cache-vulkan-sdk
+        uses: actions/cache@v1
+        with:
+          path: "C:\\VulkanSDK\\1.3.231.1"
+          key: vulkan-sdk-1.3.231.1
+
+      - name: Install VulkanSDK
+        if: steps.cache-vulkan-sdk.outputs.cache-hit != 'true'
+        run: |
+            Invoke-WebRequest -Uri "https://sdk.lunarg.com/sdk/download/1.3.231.1/windows/VulkanSDK-1.3.231.1-Installer.exe" -OutFile VulkanSDK.exe
+            $installer = Start-Process -FilePath VulkanSDK.exe -Wait -PassThru -ArgumentList @("/S");
+            $installer.WaitForExit();
 
       - name: Build
         env:
