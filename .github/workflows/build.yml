@@ -51,6 +51,7 @@ jobs:
       - name: Build
         env:
           TARGET_PLATFORM: windows
+          VULKAN_SDK: "C:\\VulkanSDK\\1.3.231.1"
         run: |
           cmake .
           cmake --build .
