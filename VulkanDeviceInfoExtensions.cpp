@@ -105,10 +105,10 @@ void VulkanDeviceInfoExtensions::readPhysicalProperties_EXT() {
 		pushProperty2(extension, { { "extension", "VK_EXT_transform_feedback" }, { "name", "maxTransformFeedbackStreamDataSize" }, { "value", extProps->maxTransformFeedbackStreamDataSize } });
 		pushProperty2(extension, { { "extension", "VK_EXT_transform_feedback" }, { "name", "maxTransformFeedbackBufferDataSize" }, { "value", extProps->maxTransformFeedbackBufferDataSize } });
 		pushProperty2(extension, { { "extension", "VK_EXT_transform_feedback" }, { "name", "maxTransformFeedbackBufferDataStride" }, { "value", extProps->maxTransformFeedbackBufferDataStride } });
-		pushProperty2(extension, { { "extension", "VK_EXT_transform_feedback" }, { "name", "transformFeedbackQueries" }, { "value", extProps->transformFeedbackQueries } });
-		pushProperty2(extension, { { "extension", "VK_EXT_transform_feedback" }, { "name", "transformFeedbackStreamsLinesTriangles" }, { "value", extProps->transformFeedbackStreamsLinesTriangles } });
-		pushProperty2(extension, { { "extension", "VK_EXT_transform_feedback" }, { "name", "transformFeedbackRasterizationStreamSelect" }, { "value", extProps->transformFeedbackRasterizationStreamSelect } });
-		pushProperty2(extension, { { "extension", "VK_EXT_transform_feedback" }, { "name", "transformFeedbackDraw" }, { "value", extProps->transformFeedbackDraw } });
+		pushProperty2(extension, { { "extension", "VK_EXT_transform_feedback" }, { "name", "transformFeedbackQueries" }, { "value", extProps->transformFeedbackQueries ? "true" : "false" } });
+		pushProperty2(extension, { { "extension", "VK_EXT_transform_feedback" }, { "name", "transformFeedbackStreamsLinesTriangles" }, { "value", extProps->transformFeedbackStreamsLinesTriangles ? "true" : "false" } });
+		pushProperty2(extension, { { "extension", "VK_EXT_transform_feedback" }, { "name", "transformFeedbackRasterizationStreamSelect" }, { "value", extProps->transformFeedbackRasterizationStreamSelect ? "true" : "false" } });
+		pushProperty2(extension, { { "extension", "VK_EXT_transform_feedback" }, { "name", "transformFeedbackDraw" }, { "value", extProps->transformFeedbackDraw ? "true" : "false" } });
 		delete extProps;
 	}
 	if (extensionSupported("VK_EXT_pipeline_robustness")) {
@@ -141,12 +141,12 @@ void VulkanDeviceInfoExtensions::readPhysicalProperties_EXT() {
 		pushProperty2(extension, { { "extension", "VK_EXT_conservative_rasterization" }, { "name", "primitiveOverestimationSize" }, { "value", extProps->primitiveOverestimationSize } });
 		pushProperty2(extension, { { "extension", "VK_EXT_conservative_rasterization" }, { "name", "maxExtraPrimitiveOverestimationSize" }, { "value", extProps->maxExtraPrimitiveOverestimationSize } });
 		pushProperty2(extension, { { "extension", "VK_EXT_conservative_rasterization" }, { "name", "extraPrimitiveOverestimationSizeGranularity" }, { "value", extProps->extraPrimitiveOverestimationSizeGranularity } });
-		pushProperty2(extension, { { "extension", "VK_EXT_conservative_rasterization" }, { "name", "primitiveUnderestimation" }, { "value", extProps->primitiveUnderestimation } });
-		pushProperty2(extension, { { "extension", "VK_EXT_conservative_rasterization" }, { "name", "conservativePointAndLineRasterization" }, { "value", extProps->conservativePointAndLineRasterization } });
-		pushProperty2(extension, { { "extension", "VK_EXT_conservative_rasterization" }, { "name", "degenerateTrianglesRasterized" }, { "value", extProps->degenerateTrianglesRasterized } });
-		pushProperty2(extension, { { "extension", "VK_EXT_conservative_rasterization" }, { "name", "degenerateLinesRasterized" }, { "value", extProps->degenerateLinesRasterized } });
-		pushProperty2(extension, { { "extension", "VK_EXT_conservative_rasterization" }, { "name", "fullyCoveredFragmentShaderInputVariable" }, { "value", extProps->fullyCoveredFragmentShaderInputVariable } });
-		pushProperty2(extension, { { "extension", "VK_EXT_conservative_rasterization" }, { "name", "conservativeRasterizationPostDepthCoverage" }, { "value", extProps->conservativeRasterizationPostDepthCoverage } });
+		pushProperty2(extension, { { "extension", "VK_EXT_conservative_rasterization" }, { "name", "primitiveUnderestimation" }, { "value", extProps->primitiveUnderestimation ? "true" : "false" } });
+		pushProperty2(extension, { { "extension", "VK_EXT_conservative_rasterization" }, { "name", "conservativePointAndLineRasterization" }, { "value", extProps->conservativePointAndLineRasterization ? "true" : "false" } });
+		pushProperty2(extension, { { "extension", "VK_EXT_conservative_rasterization" }, { "name", "degenerateTrianglesRasterized" }, { "value", extProps->degenerateTrianglesRasterized ? "true" : "false" } });
+		pushProperty2(extension, { { "extension", "VK_EXT_conservative_rasterization" }, { "name", "degenerateLinesRasterized" }, { "value", extProps->degenerateLinesRasterized ? "true" : "false" } });
+		pushProperty2(extension, { { "extension", "VK_EXT_conservative_rasterization" }, { "name", "fullyCoveredFragmentShaderInputVariable" }, { "value", extProps->fullyCoveredFragmentShaderInputVariable ? "true" : "false" } });
+		pushProperty2(extension, { { "extension", "VK_EXT_conservative_rasterization" }, { "name", "conservativeRasterizationPostDepthCoverage" }, { "value", extProps->conservativeRasterizationPostDepthCoverage ? "true" : "false" } });
 		delete extProps;
 	}
 	if (extensionSupported("VK_EXT_sampler_filter_minmax")) {
@@ -155,8 +155,8 @@ void VulkanDeviceInfoExtensions::readPhysicalProperties_EXT() {
 		extProps->sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_SAMPLER_FILTER_MINMAX_PROPERTIES;
 		deviceProps2 = initDeviceProperties2(extProps);
 		vulkanContext.vkGetPhysicalDeviceProperties2KHR(handle, &deviceProps2);
-		pushProperty2(extension, { { "extension", "VK_EXT_sampler_filter_minmax" }, { "name", "filterMinmaxSingleComponentFormats" }, { "value", extProps->filterMinmaxSingleComponentFormats } });
-		pushProperty2(extension, { { "extension", "VK_EXT_sampler_filter_minmax" }, { "name", "filterMinmaxImageComponentMapping" }, { "value", extProps->filterMinmaxImageComponentMapping } });
+		pushProperty2(extension, { { "extension", "VK_EXT_sampler_filter_minmax" }, { "name", "filterMinmaxSingleComponentFormats" }, { "value", extProps->filterMinmaxSingleComponentFormats ? "true" : "false" } });
+		pushProperty2(extension, { { "extension", "VK_EXT_sampler_filter_minmax" }, { "name", "filterMinmaxImageComponentMapping" }, { "value", extProps->filterMinmaxImageComponentMapping ? "true" : "false" } });
 		delete extProps;
 	}
 	if (extensionSupported("VK_EXT_inline_uniform_block")) {
@@ -182,7 +182,7 @@ void VulkanDeviceInfoExtensions::readPhysicalProperties_EXT() {
 		pushProperty2(extension, { { "extension", "VK_EXT_sample_locations" }, { "name", "maxSampleLocationGridSize" }, { "value", { extProps->maxSampleLocationGridSize.width, extProps->maxSampleLocationGridSize.height } } });
 		pushProperty2(extension, { { "extension", "VK_EXT_sample_locations" }, { "name", "sampleLocationCoordinateRange" }, { "value", extProps->sampleLocationCoordinateRange } });
 		pushProperty2(extension, { { "extension", "VK_EXT_sample_locations" }, { "name", "sampleLocationSubPixelBits" }, { "value", extProps->sampleLocationSubPixelBits } });
-		pushProperty2(extension, { { "extension", "VK_EXT_sample_locations" }, { "name", "variableSampleLocations" }, { "value", extProps->variableSampleLocations } });
+		pushProperty2(extension, { { "extension", "VK_EXT_sample_locations" }, { "name", "variableSampleLocations" }, { "value", extProps->variableSampleLocations ? "true" : "false" } });
 		delete extProps;
 	}
 	if (extensionSupported("VK_EXT_blend_operation_advanced")) {
@@ -192,11 +192,11 @@ void VulkanDeviceInfoExtensions::readPhysicalProperties_EXT() {
 		deviceProps2 = initDeviceProperties2(extProps);
 		vulkanContext.vkGetPhysicalDeviceProperties2KHR(handle, &deviceProps2);
 		pushProperty2(extension, { { "extension", "VK_EXT_blend_operation_advanced" }, { "name", "advancedBlendMaxColorAttachments" }, { "value", extProps->advancedBlendMaxColorAttachments } });
-		pushProperty2(extension, { { "extension", "VK_EXT_blend_operation_advanced" }, { "name", "advancedBlendIndependentBlend" }, { "value", extProps->advancedBlendIndependentBlend } });
-		pushProperty2(extension, { { "extension", "VK_EXT_blend_operation_advanced" }, { "name", "advancedBlendNonPremultipliedSrcColor" }, { "value", extProps->advancedBlendNonPremultipliedSrcColor } });
-		pushProperty2(extension, { { "extension", "VK_EXT_blend_operation_advanced" }, { "name", "advancedBlendNonPremultipliedDstColor" }, { "value", extProps->advancedBlendNonPremultipliedDstColor } });
-		pushProperty2(extension, { { "extension", "VK_EXT_blend_operation_advanced" }, { "name", "advancedBlendCorrelatedOverlap" }, { "value", extProps->advancedBlendCorrelatedOverlap } });
-		pushProperty2(extension, { { "extension", "VK_EXT_blend_operation_advanced" }, { "name", "advancedBlendAllOperations" }, { "value", extProps->advancedBlendAllOperations } });
+		pushProperty2(extension, { { "extension", "VK_EXT_blend_operation_advanced" }, { "name", "advancedBlendIndependentBlend" }, { "value", extProps->advancedBlendIndependentBlend ? "true" : "false" } });
+		pushProperty2(extension, { { "extension", "VK_EXT_blend_operation_advanced" }, { "name", "advancedBlendNonPremultipliedSrcColor" }, { "value", extProps->advancedBlendNonPremultipliedSrcColor ? "true" : "false" } });
+		pushProperty2(extension, { { "extension", "VK_EXT_blend_operation_advanced" }, { "name", "advancedBlendNonPremultipliedDstColor" }, { "value", extProps->advancedBlendNonPremultipliedDstColor ? "true" : "false" } });
+		pushProperty2(extension, { { "extension", "VK_EXT_blend_operation_advanced" }, { "name", "advancedBlendCorrelatedOverlap" }, { "value", extProps->advancedBlendCorrelatedOverlap ? "true" : "false" } });
+		pushProperty2(extension, { { "extension", "VK_EXT_blend_operation_advanced" }, { "name", "advancedBlendAllOperations" }, { "value", extProps->advancedBlendAllOperations ? "true" : "false" } });
 		delete extProps;
 	}
 	if (extensionSupported("VK_EXT_descriptor_indexing")) {
@@ -206,13 +206,13 @@ void VulkanDeviceInfoExtensions::readPhysicalProperties_EXT() {
 		deviceProps2 = initDeviceProperties2(extProps);
 		vulkanContext.vkGetPhysicalDeviceProperties2KHR(handle, &deviceProps2);
 		pushProperty2(extension, { { "extension", "VK_EXT_descriptor_indexing" }, { "name", "maxUpdateAfterBindDescriptorsInAllPools" }, { "value", extProps->maxUpdateAfterBindDescriptorsInAllPools } });
-		pushProperty2(extension, { { "extension", "VK_EXT_descriptor_indexing" }, { "name", "shaderUniformBufferArrayNonUniformIndexingNative" }, { "value", extProps->shaderUniformBufferArrayNonUniformIndexingNative } });
-		pushProperty2(extension, { { "extension", "VK_EXT_descriptor_indexing" }, { "name", "shaderSampledImageArrayNonUniformIndexingNative" }, { "value", extProps->shaderSampledImageArrayNonUniformIndexingNative } });
-		pushProperty2(extension, { { "extension", "VK_EXT_descriptor_indexing" }, { "name", "shaderStorageBufferArrayNonUniformIndexingNative" }, { "value", extProps->shaderStorageBufferArrayNonUniformIndexingNative } });
-		pushProperty2(extension, { { "extension", "VK_EXT_descriptor_indexing" }, { "name", "shaderStorageImageArrayNonUniformIndexingNative" }, { "value", extProps->shaderStorageImageArrayNonUniformIndexingNative } });
-		pushProperty2(extension, { { "extension", "VK_EXT_descriptor_indexing" }, { "name", "shaderInputAttachmentArrayNonUniformIndexingNative" }, { "value", extProps->shaderInputAttachmentArrayNonUniformIndexingNative } });
-		pushProperty2(extension, { { "extension", "VK_EXT_descriptor_indexing" }, { "name", "robustBufferAccessUpdateAfterBind" }, { "value", extProps->robustBufferAccessUpdateAfterBind } });
-		pushProperty2(extension, { { "extension", "VK_EXT_descriptor_indexing" }, { "name", "quadDivergentImplicitLod" }, { "value", extProps->quadDivergentImplicitLod } });
+		pushProperty2(extension, { { "extension", "VK_EXT_descriptor_indexing" }, { "name", "shaderUniformBufferArrayNonUniformIndexingNative" }, { "value", extProps->shaderUniformBufferArrayNonUniformIndexingNative ? "true" : "false" } });
+		pushProperty2(extension, { { "extension", "VK_EXT_descriptor_indexing" }, { "name", "shaderSampledImageArrayNonUniformIndexingNative" }, { "value", extProps->shaderSampledImageArrayNonUniformIndexingNative ? "true" : "false" } });
+		pushProperty2(extension, { { "extension", "VK_EXT_descriptor_indexing" }, { "name", "shaderStorageBufferArrayNonUniformIndexingNative" }, { "value", extProps->shaderStorageBufferArrayNonUniformIndexingNative ? "true" : "false" } });
+		pushProperty2(extension, { { "extension", "VK_EXT_descriptor_indexing" }, { "name", "shaderStorageImageArrayNonUniformIndexingNative" }, { "value", extProps->shaderStorageImageArrayNonUniformIndexingNative ? "true" : "false" } });
+		pushProperty2(extension, { { "extension", "VK_EXT_descriptor_indexing" }, { "name", "shaderInputAttachmentArrayNonUniformIndexingNative" }, { "value", extProps->shaderInputAttachmentArrayNonUniformIndexingNative ? "true" : "false" } });
+		pushProperty2(extension, { { "extension", "VK_EXT_descriptor_indexing" }, { "name", "robustBufferAccessUpdateAfterBind" }, { "value", extProps->robustBufferAccessUpdateAfterBind ? "true" : "false" } });
+		pushProperty2(extension, { { "extension", "VK_EXT_descriptor_indexing" }, { "name", "quadDivergentImplicitLod" }, { "value", extProps->quadDivergentImplicitLod ? "true" : "false" } });
 		pushProperty2(extension, { { "extension", "VK_EXT_descriptor_indexing" }, { "name", "maxPerStageDescriptorUpdateAfterBindSamplers" }, { "value", extProps->maxPerStageDescriptorUpdateAfterBindSamplers } });
 		pushProperty2(extension, { { "extension", "VK_EXT_descriptor_indexing" }, { "name", "maxPerStageDescriptorUpdateAfterBindUniformBuffers" }, { "value", extProps->maxPerStageDescriptorUpdateAfterBindUniformBuffers } });
 		pushProperty2(extension, { { "extension", "VK_EXT_descriptor_indexing" }, { "name", "maxPerStageDescriptorUpdateAfterBindStorageBuffers" }, { "value", extProps->maxPerStageDescriptorUpdateAfterBindStorageBuffers } });
@@ -268,7 +268,7 @@ void VulkanDeviceInfoExtensions::readPhysicalProperties_EXT() {
 		vulkanContext.vkGetPhysicalDeviceProperties2KHR(handle, &deviceProps2);
 		pushProperty2(extension, { { "extension", "VK_EXT_fragment_density_map" }, { "name", "minFragmentDensityTexelSize" }, { "value", { extProps->minFragmentDensityTexelSize.width, extProps->minFragmentDensityTexelSize.height } } });
 		pushProperty2(extension, { { "extension", "VK_EXT_fragment_density_map" }, { "name", "maxFragmentDensityTexelSize" }, { "value", { extProps->maxFragmentDensityTexelSize.width, extProps->maxFragmentDensityTexelSize.height } } });
-		pushProperty2(extension, { { "extension", "VK_EXT_fragment_density_map" }, { "name", "fragmentDensityInvocations" }, { "value", extProps->fragmentDensityInvocations } });
+		pushProperty2(extension, { { "extension", "VK_EXT_fragment_density_map" }, { "name", "fragmentDensityInvocations" }, { "value", extProps->fragmentDensityInvocations ? "true" : "false" } });
 		delete extProps;
 	}
 	if (extensionSupported("VK_EXT_subgroup_size_control")) {
@@ -289,8 +289,8 @@ void VulkanDeviceInfoExtensions::readPhysicalProperties_EXT() {
 		extProps->sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_PROVOKING_VERTEX_PROPERTIES_EXT;
 		deviceProps2 = initDeviceProperties2(extProps);
 		vulkanContext.vkGetPhysicalDeviceProperties2KHR(handle, &deviceProps2);
-		pushProperty2(extension, { { "extension", "VK_EXT_provoking_vertex" }, { "name", "provokingVertexModePerPipeline" }, { "value", extProps->provokingVertexModePerPipeline } });
-		pushProperty2(extension, { { "extension", "VK_EXT_provoking_vertex" }, { "name", "transformFeedbackPreservesTriangleFanProvokingVertex" }, { "value", extProps->transformFeedbackPreservesTriangleFanProvokingVertex } });
+		pushProperty2(extension, { { "extension", "VK_EXT_provoking_vertex" }, { "name", "provokingVertexModePerPipeline" }, { "value", extProps->provokingVertexModePerPipeline ? "true" : "false" } });
+		pushProperty2(extension, { { "extension", "VK_EXT_provoking_vertex" }, { "name", "transformFeedbackPreservesTriangleFanProvokingVertex" }, { "value", extProps->transformFeedbackPreservesTriangleFanProvokingVertex ? "true" : "false" } });
 		delete extProps;
 	}
 	if (extensionSupported("VK_EXT_line_rasterization")) {
@@ -309,9 +309,9 @@ void VulkanDeviceInfoExtensions::readPhysicalProperties_EXT() {
 		deviceProps2 = initDeviceProperties2(extProps);
 		vulkanContext.vkGetPhysicalDeviceProperties2KHR(handle, &deviceProps2);
 		pushProperty2(extension, { { "extension", "VK_EXT_texel_buffer_alignment" }, { "name", "storageTexelBufferOffsetAlignmentBytes" }, { "value", extProps->storageTexelBufferOffsetAlignmentBytes } });
-		pushProperty2(extension, { { "extension", "VK_EXT_texel_buffer_alignment" }, { "name", "storageTexelBufferOffsetSingleTexelAlignment" }, { "value", extProps->storageTexelBufferOffsetSingleTexelAlignment } });
+		pushProperty2(extension, { { "extension", "VK_EXT_texel_buffer_alignment" }, { "name", "storageTexelBufferOffsetSingleTexelAlignment" }, { "value", extProps->storageTexelBufferOffsetSingleTexelAlignment ? "true" : "false" } });
 		pushProperty2(extension, { { "extension", "VK_EXT_texel_buffer_alignment" }, { "name", "uniformTexelBufferOffsetAlignmentBytes" }, { "value", extProps->uniformTexelBufferOffsetAlignmentBytes } });
-		pushProperty2(extension, { { "extension", "VK_EXT_texel_buffer_alignment" }, { "name", "uniformTexelBufferOffsetSingleTexelAlignment" }, { "value", extProps->uniformTexelBufferOffsetSingleTexelAlignment } });
+		pushProperty2(extension, { { "extension", "VK_EXT_texel_buffer_alignment" }, { "name", "uniformTexelBufferOffsetSingleTexelAlignment" }, { "value", extProps->uniformTexelBufferOffsetSingleTexelAlignment ? "true" : "false" } });
 		delete extProps;
 	}
 	if (extensionSupported("VK_EXT_robustness2")) {
@@ -339,9 +339,9 @@ void VulkanDeviceInfoExtensions::readPhysicalProperties_EXT() {
 		extProps->sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_DESCRIPTOR_BUFFER_PROPERTIES_EXT;
 		deviceProps2 = initDeviceProperties2(extProps);
 		vulkanContext.vkGetPhysicalDeviceProperties2KHR(handle, &deviceProps2);
-		pushProperty2(extension, { { "extension", "VK_EXT_descriptor_buffer" }, { "name", "combinedImageSamplerDescriptorSingleArray" }, { "value", extProps->combinedImageSamplerDescriptorSingleArray } });
-		pushProperty2(extension, { { "extension", "VK_EXT_descriptor_buffer" }, { "name", "bufferlessPushDescriptors" }, { "value", extProps->bufferlessPushDescriptors } });
-		pushProperty2(extension, { { "extension", "VK_EXT_descriptor_buffer" }, { "name", "allowSamplerImageViewPostSubmitCreation" }, { "value", extProps->allowSamplerImageViewPostSubmitCreation } });
+		pushProperty2(extension, { { "extension", "VK_EXT_descriptor_buffer" }, { "name", "combinedImageSamplerDescriptorSingleArray" }, { "value", extProps->combinedImageSamplerDescriptorSingleArray ? "true" : "false" } });
+		pushProperty2(extension, { { "extension", "VK_EXT_descriptor_buffer" }, { "name", "bufferlessPushDescriptors" }, { "value", extProps->bufferlessPushDescriptors ? "true" : "false" } });
+		pushProperty2(extension, { { "extension", "VK_EXT_descriptor_buffer" }, { "name", "allowSamplerImageViewPostSubmitCreation" }, { "value", extProps->allowSamplerImageViewPostSubmitCreation ? "true" : "false" } });
 		pushProperty2(extension, { { "extension", "VK_EXT_descriptor_buffer" }, { "name", "descriptorBufferOffsetAlignment" }, { "value", extProps->descriptorBufferOffsetAlignment } });
 		pushProperty2(extension, { { "extension", "VK_EXT_descriptor_buffer" }, { "name", "maxDescriptorBufferBindings" }, { "value", extProps->maxDescriptorBufferBindings } });
 		pushProperty2(extension, { { "extension", "VK_EXT_descriptor_buffer" }, { "name", "maxResourceDescriptorBufferBindings" }, { "value", extProps->maxResourceDescriptorBufferBindings } });
@@ -380,8 +380,8 @@ void VulkanDeviceInfoExtensions::readPhysicalProperties_EXT() {
 		extProps->sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_GRAPHICS_PIPELINE_LIBRARY_PROPERTIES_EXT;
 		deviceProps2 = initDeviceProperties2(extProps);
 		vulkanContext.vkGetPhysicalDeviceProperties2KHR(handle, &deviceProps2);
-		pushProperty2(extension, { { "extension", "VK_EXT_graphics_pipeline_library" }, { "name", "graphicsPipelineLibraryFastLinking" }, { "value", extProps->graphicsPipelineLibraryFastLinking } });
-		pushProperty2(extension, { { "extension", "VK_EXT_graphics_pipeline_library" }, { "name", "graphicsPipelineLibraryIndependentInterpolationDecoration" }, { "value", extProps->graphicsPipelineLibraryIndependentInterpolationDecoration } });
+		pushProperty2(extension, { { "extension", "VK_EXT_graphics_pipeline_library" }, { "name", "graphicsPipelineLibraryFastLinking" }, { "value", extProps->graphicsPipelineLibraryFastLinking ? "true" : "false" } });
+		pushProperty2(extension, { { "extension", "VK_EXT_graphics_pipeline_library" }, { "name", "graphicsPipelineLibraryIndependentInterpolationDecoration" }, { "value", extProps->graphicsPipelineLibraryIndependentInterpolationDecoration ? "true" : "false" } });
 		delete extProps;
 	}
 	if (extensionSupported("VK_EXT_mesh_shader")) {
@@ -414,10 +414,10 @@ void VulkanDeviceInfoExtensions::readPhysicalProperties_EXT() {
 		pushProperty2(extension, { { "extension", "VK_EXT_mesh_shader" }, { "name", "meshOutputPerPrimitiveGranularity" }, { "value", extProps->meshOutputPerPrimitiveGranularity } });
 		pushProperty2(extension, { { "extension", "VK_EXT_mesh_shader" }, { "name", "maxPreferredTaskWorkGroupInvocations" }, { "value", extProps->maxPreferredTaskWorkGroupInvocations } });
 		pushProperty2(extension, { { "extension", "VK_EXT_mesh_shader" }, { "name", "maxPreferredMeshWorkGroupInvocations" }, { "value", extProps->maxPreferredMeshWorkGroupInvocations } });
-		pushProperty2(extension, { { "extension", "VK_EXT_mesh_shader" }, { "name", "prefersLocalInvocationVertexOutput" }, { "value", extProps->prefersLocalInvocationVertexOutput } });
-		pushProperty2(extension, { { "extension", "VK_EXT_mesh_shader" }, { "name", "prefersLocalInvocationPrimitiveOutput" }, { "value", extProps->prefersLocalInvocationPrimitiveOutput } });
-		pushProperty2(extension, { { "extension", "VK_EXT_mesh_shader" }, { "name", "prefersCompactVertexOutput" }, { "value", extProps->prefersCompactVertexOutput } });
-		pushProperty2(extension, { { "extension", "VK_EXT_mesh_shader" }, { "name", "prefersCompactPrimitiveOutput" }, { "value", extProps->prefersCompactPrimitiveOutput } });
+		pushProperty2(extension, { { "extension", "VK_EXT_mesh_shader" }, { "name", "prefersLocalInvocationVertexOutput" }, { "value", extProps->prefersLocalInvocationVertexOutput ? "true" : "false" } });
+		pushProperty2(extension, { { "extension", "VK_EXT_mesh_shader" }, { "name", "prefersLocalInvocationPrimitiveOutput" }, { "value", extProps->prefersLocalInvocationPrimitiveOutput ? "true" : "false" } });
+		pushProperty2(extension, { { "extension", "VK_EXT_mesh_shader" }, { "name", "prefersCompactVertexOutput" }, { "value", extProps->prefersCompactVertexOutput ? "true" : "false" } });
+		pushProperty2(extension, { { "extension", "VK_EXT_mesh_shader" }, { "name", "prefersCompactPrimitiveOutput" }, { "value", extProps->prefersCompactPrimitiveOutput ? "true" : "false" } });
 		delete extProps;
 	}
 	if (extensionSupported("VK_EXT_fragment_density_map2")) {
@@ -426,8 +426,8 @@ void VulkanDeviceInfoExtensions::readPhysicalProperties_EXT() {
 		extProps->sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_FRAGMENT_DENSITY_MAP_2_PROPERTIES_EXT;
 		deviceProps2 = initDeviceProperties2(extProps);
 		vulkanContext.vkGetPhysicalDeviceProperties2KHR(handle, &deviceProps2);
-		pushProperty2(extension, { { "extension", "VK_EXT_fragment_density_map2" }, { "name", "subsampledLoads" }, { "value", extProps->subsampledLoads } });
-		pushProperty2(extension, { { "extension", "VK_EXT_fragment_density_map2" }, { "name", "subsampledCoarseReconstructionEarlyAccess" }, { "value", extProps->subsampledCoarseReconstructionEarlyAccess } });
+		pushProperty2(extension, { { "extension", "VK_EXT_fragment_density_map2" }, { "name", "subsampledLoads" }, { "value", extProps->subsampledLoads ? "true" : "false" } });
+		pushProperty2(extension, { { "extension", "VK_EXT_fragment_density_map2" }, { "name", "subsampledCoarseReconstructionEarlyAccess" }, { "value", extProps->subsampledCoarseReconstructionEarlyAccess ? "true" : "false" } });
 		pushProperty2(extension, { { "extension", "VK_EXT_fragment_density_map2" }, { "name", "maxSubsampledArrayLayers" }, { "value", extProps->maxSubsampledArrayLayers } });
 		pushProperty2(extension, { { "extension", "VK_EXT_fragment_density_map2" }, { "name", "maxDescriptorSetSubsampledSamplers" }, { "value", extProps->maxDescriptorSetSubsampledSamplers } });
 		delete extProps;
@@ -438,8 +438,8 @@ void VulkanDeviceInfoExtensions::readPhysicalProperties_EXT() {
 		extProps->sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_DRM_PROPERTIES_EXT;
 		deviceProps2 = initDeviceProperties2(extProps);
 		vulkanContext.vkGetPhysicalDeviceProperties2KHR(handle, &deviceProps2);
-		pushProperty2(extension, { { "extension", "VK_EXT_physical_device_drm" }, { "name", "hasPrimary" }, { "value", extProps->hasPrimary } });
-		pushProperty2(extension, { { "extension", "VK_EXT_physical_device_drm" }, { "name", "hasRender" }, { "value", extProps->hasRender } });
+		pushProperty2(extension, { { "extension", "VK_EXT_physical_device_drm" }, { "name", "hasPrimary" }, { "value", extProps->hasPrimary ? "true" : "false" } });
+		pushProperty2(extension, { { "extension", "VK_EXT_physical_device_drm" }, { "name", "hasRender" }, { "value", extProps->hasRender ? "true" : "false" } });
 		pushProperty2(extension, { { "extension", "VK_EXT_physical_device_drm" }, { "name", "primaryMajor" }, { "value", extProps->primaryMajor } });
 		pushProperty2(extension, { { "extension", "VK_EXT_physical_device_drm" }, { "name", "primaryMinor" }, { "value", extProps->primaryMinor } });
 		pushProperty2(extension, { { "extension", "VK_EXT_physical_device_drm" }, { "name", "renderMajor" }, { "value", extProps->renderMajor } });
@@ -471,7 +471,7 @@ void VulkanDeviceInfoExtensions::readPhysicalProperties_EXT() {
 		extProps->sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_EXTENDED_DYNAMIC_STATE_3_PROPERTIES_EXT;
 		deviceProps2 = initDeviceProperties2(extProps);
 		vulkanContext.vkGetPhysicalDeviceProperties2KHR(handle, &deviceProps2);
-		pushProperty2(extension, { { "extension", "VK_EXT_extended_dynamic_state3" }, { "name", "dynamicPrimitiveTopologyUnrestricted" }, { "value", extProps->dynamicPrimitiveTopologyUnrestricted } });
+		pushProperty2(extension, { { "extension", "VK_EXT_extended_dynamic_state3" }, { "name", "dynamicPrimitiveTopologyUnrestricted" }, { "value", extProps->dynamicPrimitiveTopologyUnrestricted ? "true" : "false" } });
 		delete extProps;
 	}
 	if (extensionSupported("VK_EXT_shader_module_identifier")) {
@@ -518,7 +518,7 @@ void VulkanDeviceInfoExtensions::readPhysicalProperties_KHR() {
 		pushProperty2(extension, { { "extension", "VK_KHR_external_memory_capabilities" }, { "name", "driverUUID" }, { "value", extProps->driverUUID } });
 		pushProperty2(extension, { { "extension", "VK_KHR_external_memory_capabilities" }, { "name", "deviceLUID" }, { "value", extProps->deviceLUID } });
 		pushProperty2(extension, { { "extension", "VK_KHR_external_memory_capabilities" }, { "name", "deviceNodeMask" }, { "value", extProps->deviceNodeMask } });
-		pushProperty2(extension, { { "extension", "VK_KHR_external_memory_capabilities" }, { "name", "deviceLUIDValid" }, { "value", extProps->deviceLUIDValid } });
+		pushProperty2(extension, { { "extension", "VK_KHR_external_memory_capabilities" }, { "name", "deviceLUIDValid" }, { "value", extProps->deviceLUIDValid ? "true" : "false" } });
 		delete extProps;
 	}
 	if (extensionSupported("VK_KHR_external_semaphore_capabilities")) {
@@ -531,7 +531,7 @@ void VulkanDeviceInfoExtensions::readPhysicalProperties_KHR() {
 		pushProperty2(extension, { { "extension", "VK_KHR_external_semaphore_capabilities" }, { "name", "driverUUID" }, { "value", extProps->driverUUID } });
 		pushProperty2(extension, { { "extension", "VK_KHR_external_semaphore_capabilities" }, { "name", "deviceLUID" }, { "value", extProps->deviceLUID } });
 		pushProperty2(extension, { { "extension", "VK_KHR_external_semaphore_capabilities" }, { "name", "deviceNodeMask" }, { "value", extProps->deviceNodeMask } });
-		pushProperty2(extension, { { "extension", "VK_KHR_external_semaphore_capabilities" }, { "name", "deviceLUIDValid" }, { "value", extProps->deviceLUIDValid } });
+		pushProperty2(extension, { { "extension", "VK_KHR_external_semaphore_capabilities" }, { "name", "deviceLUIDValid" }, { "value", extProps->deviceLUIDValid ? "true" : "false" } });
 		delete extProps;
 	}
 	if (extensionSupported("VK_KHR_push_descriptor")) {
@@ -553,7 +553,7 @@ void VulkanDeviceInfoExtensions::readPhysicalProperties_KHR() {
 		pushProperty2(extension, { { "extension", "VK_KHR_external_fence_capabilities" }, { "name", "driverUUID" }, { "value", extProps->driverUUID } });
 		pushProperty2(extension, { { "extension", "VK_KHR_external_fence_capabilities" }, { "name", "deviceLUID" }, { "value", extProps->deviceLUID } });
 		pushProperty2(extension, { { "extension", "VK_KHR_external_fence_capabilities" }, { "name", "deviceNodeMask" }, { "value", extProps->deviceNodeMask } });
-		pushProperty2(extension, { { "extension", "VK_KHR_external_fence_capabilities" }, { "name", "deviceLUIDValid" }, { "value", extProps->deviceLUIDValid } });
+		pushProperty2(extension, { { "extension", "VK_KHR_external_fence_capabilities" }, { "name", "deviceLUIDValid" }, { "value", extProps->deviceLUIDValid ? "true" : "false" } });
 		delete extProps;
 	}
 	if (extensionSupported("VK_KHR_performance_query")) {
@@ -562,7 +562,7 @@ void VulkanDeviceInfoExtensions::readPhysicalProperties_KHR() {
 		extProps->sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_PERFORMANCE_QUERY_PROPERTIES_KHR;
 		deviceProps2 = initDeviceProperties2(extProps);
 		vulkanContext.vkGetPhysicalDeviceProperties2KHR(handle, &deviceProps2);
-		pushProperty2(extension, { { "extension", "VK_KHR_performance_query" }, { "name", "allowCommandBufferQueryCopies" }, { "value", extProps->allowCommandBufferQueryCopies } });
+		pushProperty2(extension, { { "extension", "VK_KHR_performance_query" }, { "name", "allowCommandBufferQueryCopies" }, { "value", extProps->allowCommandBufferQueryCopies ? "true" : "false" } });
 		delete extProps;
 	}
 	if (extensionSupported("VK_KHR_maintenance2")) {
@@ -645,21 +645,21 @@ void VulkanDeviceInfoExtensions::readPhysicalProperties_KHR() {
 		vulkanContext.vkGetPhysicalDeviceProperties2KHR(handle, &deviceProps2);
 		pushProperty2(extension, { { "extension", "VK_KHR_shader_float_controls" }, { "name", "denormBehaviorIndependence" }, { "value", extProps->denormBehaviorIndependence } });
 		pushProperty2(extension, { { "extension", "VK_KHR_shader_float_controls" }, { "name", "roundingModeIndependence" }, { "value", extProps->roundingModeIndependence } });
-		pushProperty2(extension, { { "extension", "VK_KHR_shader_float_controls" }, { "name", "shaderSignedZeroInfNanPreserveFloat16" }, { "value", extProps->shaderSignedZeroInfNanPreserveFloat16 } });
-		pushProperty2(extension, { { "extension", "VK_KHR_shader_float_controls" }, { "name", "shaderSignedZeroInfNanPreserveFloat32" }, { "value", extProps->shaderSignedZeroInfNanPreserveFloat32 } });
-		pushProperty2(extension, { { "extension", "VK_KHR_shader_float_controls" }, { "name", "shaderSignedZeroInfNanPreserveFloat64" }, { "value", extProps->shaderSignedZeroInfNanPreserveFloat64 } });
-		pushProperty2(extension, { { "extension", "VK_KHR_shader_float_controls" }, { "name", "shaderDenormPreserveFloat16" }, { "value", extProps->shaderDenormPreserveFloat16 } });
-		pushProperty2(extension, { { "extension", "VK_KHR_shader_float_controls" }, { "name", "shaderDenormPreserveFloat32" }, { "value", extProps->shaderDenormPreserveFloat32 } });
-		pushProperty2(extension, { { "extension", "VK_KHR_shader_float_controls" }, { "name", "shaderDenormPreserveFloat64" }, { "value", extProps->shaderDenormPreserveFloat64 } });
-		pushProperty2(extension, { { "extension", "VK_KHR_shader_float_controls" }, { "name", "shaderDenormFlushToZeroFloat16" }, { "value", extProps->shaderDenormFlushToZeroFloat16 } });
-		pushProperty2(extension, { { "extension", "VK_KHR_shader_float_controls" }, { "name", "shaderDenormFlushToZeroFloat32" }, { "value", extProps->shaderDenormFlushToZeroFloat32 } });
-		pushProperty2(extension, { { "extension", "VK_KHR_shader_float_controls" }, { "name", "shaderDenormFlushToZeroFloat64" }, { "value", extProps->shaderDenormFlushToZeroFloat64 } });
-		pushProperty2(extension, { { "extension", "VK_KHR_shader_float_controls" }, { "name", "shaderRoundingModeRTEFloat16" }, { "value", extProps->shaderRoundingModeRTEFloat16 } });
-		pushProperty2(extension, { { "extension", "VK_KHR_shader_float_controls" }, { "name", "shaderRoundingModeRTEFloat32" }, { "value", extProps->shaderRoundingModeRTEFloat32 } });
-		pushProperty2(extension, { { "extension", "VK_KHR_shader_float_controls" }, { "name", "shaderRoundingModeRTEFloat64" }, { "value", extProps->shaderRoundingModeRTEFloat64 } });
-		pushProperty2(extension, { { "extension", "VK_KHR_shader_float_controls" }, { "name", "shaderRoundingModeRTZFloat16" }, { "value", extProps->shaderRoundingModeRTZFloat16 } });
-		pushProperty2(extension, { { "extension", "VK_KHR_shader_float_controls" }, { "name", "shaderRoundingModeRTZFloat32" }, { "value", extProps->shaderRoundingModeRTZFloat32 } });
-		pushProperty2(extension, { { "extension", "VK_KHR_shader_float_controls" }, { "name", "shaderRoundingModeRTZFloat64" }, { "value", extProps->shaderRoundingModeRTZFloat64 } });
+		pushProperty2(extension, { { "extension", "VK_KHR_shader_float_controls" }, { "name", "shaderSignedZeroInfNanPreserveFloat16" }, { "value", extProps->shaderSignedZeroInfNanPreserveFloat16 ? "true" : "false" } });
+		pushProperty2(extension, { { "extension", "VK_KHR_shader_float_controls" }, { "name", "shaderSignedZeroInfNanPreserveFloat32" }, { "value", extProps->shaderSignedZeroInfNanPreserveFloat32 ? "true" : "false" } });
+		pushProperty2(extension, { { "extension", "VK_KHR_shader_float_controls" }, { "name", "shaderSignedZeroInfNanPreserveFloat64" }, { "value", extProps->shaderSignedZeroInfNanPreserveFloat64 ? "true" : "false" } });
+		pushProperty2(extension, { { "extension", "VK_KHR_shader_float_controls" }, { "name", "shaderDenormPreserveFloat16" }, { "value", extProps->shaderDenormPreserveFloat16 ? "true" : "false" } });
+		pushProperty2(extension, { { "extension", "VK_KHR_shader_float_controls" }, { "name", "shaderDenormPreserveFloat32" }, { "value", extProps->shaderDenormPreserveFloat32 ? "true" : "false" } });
+		pushProperty2(extension, { { "extension", "VK_KHR_shader_float_controls" }, { "name", "shaderDenormPreserveFloat64" }, { "value", extProps->shaderDenormPreserveFloat64 ? "true" : "false" } });
+		pushProperty2(extension, { { "extension", "VK_KHR_shader_float_controls" }, { "name", "shaderDenormFlushToZeroFloat16" }, { "value", extProps->shaderDenormFlushToZeroFloat16 ? "true" : "false" } });
+		pushProperty2(extension, { { "extension", "VK_KHR_shader_float_controls" }, { "name", "shaderDenormFlushToZeroFloat32" }, { "value", extProps->shaderDenormFlushToZeroFloat32 ? "true" : "false" } });
+		pushProperty2(extension, { { "extension", "VK_KHR_shader_float_controls" }, { "name", "shaderDenormFlushToZeroFloat64" }, { "value", extProps->shaderDenormFlushToZeroFloat64 ? "true" : "false" } });
+		pushProperty2(extension, { { "extension", "VK_KHR_shader_float_controls" }, { "name", "shaderRoundingModeRTEFloat16" }, { "value", extProps->shaderRoundingModeRTEFloat16 ? "true" : "false" } });
+		pushProperty2(extension, { { "extension", "VK_KHR_shader_float_controls" }, { "name", "shaderRoundingModeRTEFloat32" }, { "value", extProps->shaderRoundingModeRTEFloat32 ? "true" : "false" } });
+		pushProperty2(extension, { { "extension", "VK_KHR_shader_float_controls" }, { "name", "shaderRoundingModeRTEFloat64" }, { "value", extProps->shaderRoundingModeRTEFloat64 ? "true" : "false" } });
+		pushProperty2(extension, { { "extension", "VK_KHR_shader_float_controls" }, { "name", "shaderRoundingModeRTZFloat16" }, { "value", extProps->shaderRoundingModeRTZFloat16 ? "true" : "false" } });
+		pushProperty2(extension, { { "extension", "VK_KHR_shader_float_controls" }, { "name", "shaderRoundingModeRTZFloat32" }, { "value", extProps->shaderRoundingModeRTZFloat32 ? "true" : "false" } });
+		pushProperty2(extension, { { "extension", "VK_KHR_shader_float_controls" }, { "name", "shaderRoundingModeRTZFloat64" }, { "value", extProps->shaderRoundingModeRTZFloat64 ? "true" : "false" } });
 		delete extProps;
 	}
 	if (extensionSupported("VK_KHR_depth_stencil_resolve")) {
@@ -670,8 +670,8 @@ void VulkanDeviceInfoExtensions::readPhysicalProperties_KHR() {
 		vulkanContext.vkGetPhysicalDeviceProperties2KHR(handle, &deviceProps2);
 		pushProperty2(extension, { { "extension", "VK_KHR_depth_stencil_resolve" }, { "name", "supportedDepthResolveModes" }, { "value", extProps->supportedDepthResolveModes } });
 		pushProperty2(extension, { { "extension", "VK_KHR_depth_stencil_resolve" }, { "name", "supportedStencilResolveModes" }, { "value", extProps->supportedStencilResolveModes } });
-		pushProperty2(extension, { { "extension", "VK_KHR_depth_stencil_resolve" }, { "name", "independentResolveNone" }, { "value", extProps->independentResolveNone } });
-		pushProperty2(extension, { { "extension", "VK_KHR_depth_stencil_resolve" }, { "name", "independentResolve" }, { "value", extProps->independentResolve } });
+		pushProperty2(extension, { { "extension", "VK_KHR_depth_stencil_resolve" }, { "name", "independentResolveNone" }, { "value", extProps->independentResolveNone ? "true" : "false" } });
+		pushProperty2(extension, { { "extension", "VK_KHR_depth_stencil_resolve" }, { "name", "independentResolve" }, { "value", extProps->independentResolve ? "true" : "false" } });
 		delete extProps;
 	}
 	if (extensionSupported("VK_KHR_timeline_semaphore")) {
@@ -692,20 +692,20 @@ void VulkanDeviceInfoExtensions::readPhysicalProperties_KHR() {
 		pushProperty2(extension, { { "extension", "VK_KHR_fragment_shading_rate" }, { "name", "minFragmentShadingRateAttachmentTexelSize" }, { "value", { extProps->minFragmentShadingRateAttachmentTexelSize.width, extProps->minFragmentShadingRateAttachmentTexelSize.height } } });
 		pushProperty2(extension, { { "extension", "VK_KHR_fragment_shading_rate" }, { "name", "maxFragmentShadingRateAttachmentTexelSize" }, { "value", { extProps->maxFragmentShadingRateAttachmentTexelSize.width, extProps->maxFragmentShadingRateAttachmentTexelSize.height } } });
 		pushProperty2(extension, { { "extension", "VK_KHR_fragment_shading_rate" }, { "name", "maxFragmentShadingRateAttachmentTexelSizeAspectRatio" }, { "value", extProps->maxFragmentShadingRateAttachmentTexelSizeAspectRatio } });
-		pushProperty2(extension, { { "extension", "VK_KHR_fragment_shading_rate" }, { "name", "primitiveFragmentShadingRateWithMultipleViewports" }, { "value", extProps->primitiveFragmentShadingRateWithMultipleViewports } });
-		pushProperty2(extension, { { "extension", "VK_KHR_fragment_shading_rate" }, { "name", "layeredShadingRateAttachments" }, { "value", extProps->layeredShadingRateAttachments } });
-		pushProperty2(extension, { { "extension", "VK_KHR_fragment_shading_rate" }, { "name", "fragmentShadingRateNonTrivialCombinerOps" }, { "value", extProps->fragmentShadingRateNonTrivialCombinerOps } });
+		pushProperty2(extension, { { "extension", "VK_KHR_fragment_shading_rate" }, { "name", "primitiveFragmentShadingRateWithMultipleViewports" }, { "value", extProps->primitiveFragmentShadingRateWithMultipleViewports ? "true" : "false" } });
+		pushProperty2(extension, { { "extension", "VK_KHR_fragment_shading_rate" }, { "name", "layeredShadingRateAttachments" }, { "value", extProps->layeredShadingRateAttachments ? "true" : "false" } });
+		pushProperty2(extension, { { "extension", "VK_KHR_fragment_shading_rate" }, { "name", "fragmentShadingRateNonTrivialCombinerOps" }, { "value", extProps->fragmentShadingRateNonTrivialCombinerOps ? "true" : "false" } });
 		pushProperty2(extension, { { "extension", "VK_KHR_fragment_shading_rate" }, { "name", "maxFragmentSize" }, { "value", { extProps->maxFragmentSize.width, extProps->maxFragmentSize.height } } });
 		pushProperty2(extension, { { "extension", "VK_KHR_fragment_shading_rate" }, { "name", "maxFragmentSizeAspectRatio" }, { "value", extProps->maxFragmentSizeAspectRatio } });
 		pushProperty2(extension, { { "extension", "VK_KHR_fragment_shading_rate" }, { "name", "maxFragmentShadingRateCoverageSamples" }, { "value", extProps->maxFragmentShadingRateCoverageSamples } });
 		pushProperty2(extension, { { "extension", "VK_KHR_fragment_shading_rate" }, { "name", "maxFragmentShadingRateRasterizationSamples" }, { "value", extProps->maxFragmentShadingRateRasterizationSamples } });
-		pushProperty2(extension, { { "extension", "VK_KHR_fragment_shading_rate" }, { "name", "fragmentShadingRateWithShaderDepthStencilWrites" }, { "value", extProps->fragmentShadingRateWithShaderDepthStencilWrites } });
-		pushProperty2(extension, { { "extension", "VK_KHR_fragment_shading_rate" }, { "name", "fragmentShadingRateWithSampleMask" }, { "value", extProps->fragmentShadingRateWithSampleMask } });
-		pushProperty2(extension, { { "extension", "VK_KHR_fragment_shading_rate" }, { "name", "fragmentShadingRateWithShaderSampleMask" }, { "value", extProps->fragmentShadingRateWithShaderSampleMask } });
-		pushProperty2(extension, { { "extension", "VK_KHR_fragment_shading_rate" }, { "name", "fragmentShadingRateWithConservativeRasterization" }, { "value", extProps->fragmentShadingRateWithConservativeRasterization } });
-		pushProperty2(extension, { { "extension", "VK_KHR_fragment_shading_rate" }, { "name", "fragmentShadingRateWithFragmentShaderInterlock" }, { "value", extProps->fragmentShadingRateWithFragmentShaderInterlock } });
-		pushProperty2(extension, { { "extension", "VK_KHR_fragment_shading_rate" }, { "name", "fragmentShadingRateWithCustomSampleLocations" }, { "value", extProps->fragmentShadingRateWithCustomSampleLocations } });
-		pushProperty2(extension, { { "extension", "VK_KHR_fragment_shading_rate" }, { "name", "fragmentShadingRateStrictMultiplyCombiner" }, { "value", extProps->fragmentShadingRateStrictMultiplyCombiner } });
+		pushProperty2(extension, { { "extension", "VK_KHR_fragment_shading_rate" }, { "name", "fragmentShadingRateWithShaderDepthStencilWrites" }, { "value", extProps->fragmentShadingRateWithShaderDepthStencilWrites ? "true" : "false" } });
+		pushProperty2(extension, { { "extension", "VK_KHR_fragment_shading_rate" }, { "name", "fragmentShadingRateWithSampleMask" }, { "value", extProps->fragmentShadingRateWithSampleMask ? "true" : "false" } });
+		pushProperty2(extension, { { "extension", "VK_KHR_fragment_shading_rate" }, { "name", "fragmentShadingRateWithShaderSampleMask" }, { "value", extProps->fragmentShadingRateWithShaderSampleMask ? "true" : "false" } });
+		pushProperty2(extension, { { "extension", "VK_KHR_fragment_shading_rate" }, { "name", "fragmentShadingRateWithConservativeRasterization" }, { "value", extProps->fragmentShadingRateWithConservativeRasterization ? "true" : "false" } });
+		pushProperty2(extension, { { "extension", "VK_KHR_fragment_shading_rate" }, { "name", "fragmentShadingRateWithFragmentShaderInterlock" }, { "value", extProps->fragmentShadingRateWithFragmentShaderInterlock ? "true" : "false" } });
+		pushProperty2(extension, { { "extension", "VK_KHR_fragment_shading_rate" }, { "name", "fragmentShadingRateWithCustomSampleLocations" }, { "value", extProps->fragmentShadingRateWithCustomSampleLocations ? "true" : "false" } });
+		pushProperty2(extension, { { "extension", "VK_KHR_fragment_shading_rate" }, { "name", "fragmentShadingRateStrictMultiplyCombiner" }, { "value", extProps->fragmentShadingRateStrictMultiplyCombiner ? "true" : "false" } });
 		delete extProps;
 	}
 	if (extensionSupported("VK_KHR_shader_integer_dot_product")) {
@@ -714,36 +714,36 @@ void VulkanDeviceInfoExtensions::readPhysicalProperties_KHR() {
 		extProps->sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_SHADER_INTEGER_DOT_PRODUCT_PROPERTIES;
 		deviceProps2 = initDeviceProperties2(extProps);
 		vulkanContext.vkGetPhysicalDeviceProperties2KHR(handle, &deviceProps2);
-		pushProperty2(extension, { { "extension", "VK_KHR_shader_integer_dot_product" }, { "name", "integerDotProduct8BitUnsignedAccelerated" }, { "value", extProps->integerDotProduct8BitUnsignedAccelerated } });
-		pushProperty2(extension, { { "extension", "VK_KHR_shader_integer_dot_product" }, { "name", "integerDotProduct8BitSignedAccelerated" }, { "value", extProps->integerDotProduct8BitSignedAccelerated } });
-		pushProperty2(extension, { { "extension", "VK_KHR_shader_integer_dot_product" }, { "name", "integerDotProduct8BitMixedSignednessAccelerated" }, { "value", extProps->integerDotProduct8BitMixedSignednessAccelerated } });
-		pushProperty2(extension, { { "extension", "VK_KHR_shader_integer_dot_product" }, { "name", "integerDotProduct4x8BitPackedUnsignedAccelerated" }, { "value", extProps->integerDotProduct4x8BitPackedUnsignedAccelerated } });
-		pushProperty2(extension, { { "extension", "VK_KHR_shader_integer_dot_product" }, { "name", "integerDotProduct4x8BitPackedSignedAccelerated" }, { "value", extProps->integerDotProduct4x8BitPackedSignedAccelerated } });
-		pushProperty2(extension, { { "extension", "VK_KHR_shader_integer_dot_product" }, { "name", "integerDotProduct4x8BitPackedMixedSignednessAccelerated" }, { "value", extProps->integerDotProduct4x8BitPackedMixedSignednessAccelerated } });
-		pushProperty2(extension, { { "extension", "VK_KHR_shader_integer_dot_product" }, { "name", "integerDotProduct16BitUnsignedAccelerated" }, { "value", extProps->integerDotProduct16BitUnsignedAccelerated } });
-		pushProperty2(extension, { { "extension", "VK_KHR_shader_integer_dot_product" }, { "name", "integerDotProduct16BitSignedAccelerated" }, { "value", extProps->integerDotProduct16BitSignedAccelerated } });
-		pushProperty2(extension, { { "extension", "VK_KHR_shader_integer_dot_product" }, { "name", "integerDotProduct16BitMixedSignednessAccelerated" }, { "value", extProps->integerDotProduct16BitMixedSignednessAccelerated } });
-		pushProperty2(extension, { { "extension", "VK_KHR_shader_integer_dot_product" }, { "name", "integerDotProduct32BitUnsignedAccelerated" }, { "value", extProps->integerDotProduct32BitUnsignedAccelerated } });
-		pushProperty2(extension, { { "extension", "VK_KHR_shader_integer_dot_product" }, { "name", "integerDotProduct32BitSignedAccelerated" }, { "value", extProps->integerDotProduct32BitSignedAccelerated } });
-		pushProperty2(extension, { { "extension", "VK_KHR_shader_integer_dot_product" }, { "name", "integerDotProduct32BitMixedSignednessAccelerated" }, { "value", extProps->integerDotProduct32BitMixedSignednessAccelerated } });
-		pushProperty2(extension, { { "extension", "VK_KHR_shader_integer_dot_product" }, { "name", "integerDotProduct64BitUnsignedAccelerated" }, { "value", extProps->integerDotProduct64BitUnsignedAccelerated } });
-		pushProperty2(extension, { { "extension", "VK_KHR_shader_integer_dot_product" }, { "name", "integerDotProduct64BitSignedAccelerated" }, { "value", extProps->integerDotProduct64BitSignedAccelerated } });
-		pushProperty2(extension, { { "extension", "VK_KHR_shader_integer_dot_product" }, { "name", "integerDotProduct64BitMixedSignednessAccelerated" }, { "value", extProps->integerDotProduct64BitMixedSignednessAccelerated } });
-		pushProperty2(extension, { { "extension", "VK_KHR_shader_integer_dot_product" }, { "name", "integerDotProductAccumulatingSaturating8BitUnsignedAccelerated" }, { "value", extProps->integerDotProductAccumulatingSaturating8BitUnsignedAccelerated } });
-		pushProperty2(extension, { { "extension", "VK_KHR_shader_integer_dot_product" }, { "name", "integerDotProductAccumulatingSaturating8BitSignedAccelerated" }, { "value", extProps->integerDotProductAccumulatingSaturating8BitSignedAccelerated } });
-		pushProperty2(extension, { { "extension", "VK_KHR_shader_integer_dot_product" }, { "name", "integerDotProductAccumulatingSaturating8BitMixedSignednessAccelerated" }, { "value", extProps->integerDotProductAccumulatingSaturating8BitMixedSignednessAccelerated } });
-		pushProperty2(extension, { { "extension", "VK_KHR_shader_integer_dot_product" }, { "name", "integerDotProductAccumulatingSaturating4x8BitPackedUnsignedAccelerated" }, { "value", extProps->integerDotProductAccumulatingSaturating4x8BitPackedUnsignedAccelerated } });
-		pushProperty2(extension, { { "extension", "VK_KHR_shader_integer_dot_product" }, { "name", "integerDotProductAccumulatingSaturating4x8BitPackedSignedAccelerated" }, { "value", extProps->integerDotProductAccumulatingSaturating4x8BitPackedSignedAccelerated } });
-		pushProperty2(extension, { { "extension", "VK_KHR_shader_integer_dot_product" }, { "name", "integerDotProductAccumulatingSaturating4x8BitPackedMixedSignednessAccelerated" }, { "value", extProps->integerDotProductAccumulatingSaturating4x8BitPackedMixedSignednessAccelerated } });
-		pushProperty2(extension, { { "extension", "VK_KHR_shader_integer_dot_product" }, { "name", "integerDotProductAccumulatingSaturating16BitUnsignedAccelerated" }, { "value", extProps->integerDotProductAccumulatingSaturating16BitUnsignedAccelerated } });
-		pushProperty2(extension, { { "extension", "VK_KHR_shader_integer_dot_product" }, { "name", "integerDotProductAccumulatingSaturating16BitSignedAccelerated" }, { "value", extProps->integerDotProductAccumulatingSaturating16BitSignedAccelerated } });
-		pushProperty2(extension, { { "extension", "VK_KHR_shader_integer_dot_product" }, { "name", "integerDotProductAccumulatingSaturating16BitMixedSignednessAccelerated" }, { "value", extProps->integerDotProductAccumulatingSaturating16BitMixedSignednessAccelerated } });
-		pushProperty2(extension, { { "extension", "VK_KHR_shader_integer_dot_product" }, { "name", "integerDotProductAccumulatingSaturating32BitUnsignedAccelerated" }, { "value", extProps->integerDotProductAccumulatingSaturating32BitUnsignedAccelerated } });
-		pushProperty2(extension, { { "extension", "VK_KHR_shader_integer_dot_product" }, { "name", "integerDotProductAccumulatingSaturating32BitSignedAccelerated" }, { "value", extProps->integerDotProductAccumulatingSaturating32BitSignedAccelerated } });
-		pushProperty2(extension, { { "extension", "VK_KHR_shader_integer_dot_product" }, { "name", "integerDotProductAccumulatingSaturating32BitMixedSignednessAccelerated" }, { "value", extProps->integerDotProductAccumulatingSaturating32BitMixedSignednessAccelerated } });
-		pushProperty2(extension, { { "extension", "VK_KHR_shader_integer_dot_product" }, { "name", "integerDotProductAccumulatingSaturating64BitUnsignedAccelerated" }, { "value", extProps->integerDotProductAccumulatingSaturating64BitUnsignedAccelerated } });
-		pushProperty2(extension, { { "extension", "VK_KHR_shader_integer_dot_product" }, { "name", "integerDotProductAccumulatingSaturating64BitSignedAccelerated" }, { "value", extProps->integerDotProductAccumulatingSaturating64BitSignedAccelerated } });
-		pushProperty2(extension, { { "extension", "VK_KHR_shader_integer_dot_product" }, { "name", "integerDotProductAccumulatingSaturating64BitMixedSignednessAccelerated" }, { "value", extProps->integerDotProductAccumulatingSaturating64BitMixedSignednessAccelerated } });
+		pushProperty2(extension, { { "extension", "VK_KHR_shader_integer_dot_product" }, { "name", "integerDotProduct8BitUnsignedAccelerated" }, { "value", extProps->integerDotProduct8BitUnsignedAccelerated ? "true" : "false" } });
+		pushProperty2(extension, { { "extension", "VK_KHR_shader_integer_dot_product" }, { "name", "integerDotProduct8BitSignedAccelerated" }, { "value", extProps->integerDotProduct8BitSignedAccelerated ? "true" : "false" } });
+		pushProperty2(extension, { { "extension", "VK_KHR_shader_integer_dot_product" }, { "name", "integerDotProduct8BitMixedSignednessAccelerated" }, { "value", extProps->integerDotProduct8BitMixedSignednessAccelerated ? "true" : "false" } });
+		pushProperty2(extension, { { "extension", "VK_KHR_shader_integer_dot_product" }, { "name", "integerDotProduct4x8BitPackedUnsignedAccelerated" }, { "value", extProps->integerDotProduct4x8BitPackedUnsignedAccelerated ? "true" : "false" } });
+		pushProperty2(extension, { { "extension", "VK_KHR_shader_integer_dot_product" }, { "name", "integerDotProduct4x8BitPackedSignedAccelerated" }, { "value", extProps->integerDotProduct4x8BitPackedSignedAccelerated ? "true" : "false" } });
+		pushProperty2(extension, { { "extension", "VK_KHR_shader_integer_dot_product" }, { "name", "integerDotProduct4x8BitPackedMixedSignednessAccelerated" }, { "value", extProps->integerDotProduct4x8BitPackedMixedSignednessAccelerated ? "true" : "false" } });
+		pushProperty2(extension, { { "extension", "VK_KHR_shader_integer_dot_product" }, { "name", "integerDotProduct16BitUnsignedAccelerated" }, { "value", extProps->integerDotProduct16BitUnsignedAccelerated ? "true" : "false" } });
+		pushProperty2(extension, { { "extension", "VK_KHR_shader_integer_dot_product" }, { "name", "integerDotProduct16BitSignedAccelerated" }, { "value", extProps->integerDotProduct16BitSignedAccelerated ? "true" : "false" } });
+		pushProperty2(extension, { { "extension", "VK_KHR_shader_integer_dot_product" }, { "name", "integerDotProduct16BitMixedSignednessAccelerated" }, { "value", extProps->integerDotProduct16BitMixedSignednessAccelerated ? "true" : "false" } });
+		pushProperty2(extension, { { "extension", "VK_KHR_shader_integer_dot_product" }, { "name", "integerDotProduct32BitUnsignedAccelerated" }, { "value", extProps->integerDotProduct32BitUnsignedAccelerated ? "true" : "false" } });
+		pushProperty2(extension, { { "extension", "VK_KHR_shader_integer_dot_product" }, { "name", "integerDotProduct32BitSignedAccelerated" }, { "value", extProps->integerDotProduct32BitSignedAccelerated ? "true" : "false" } });
+		pushProperty2(extension, { { "extension", "VK_KHR_shader_integer_dot_product" }, { "name", "integerDotProduct32BitMixedSignednessAccelerated" }, { "value", extProps->integerDotProduct32BitMixedSignednessAccelerated ? "true" : "false" } });
+		pushProperty2(extension, { { "extension", "VK_KHR_shader_integer_dot_product" }, { "name", "integerDotProduct64BitUnsignedAccelerated" }, { "value", extProps->integerDotProduct64BitUnsignedAccelerated ? "true" : "false" } });
+		pushProperty2(extension, { { "extension", "VK_KHR_shader_integer_dot_product" }, { "name", "integerDotProduct64BitSignedAccelerated" }, { "value", extProps->integerDotProduct64BitSignedAccelerated ? "true" : "false" } });
+		pushProperty2(extension, { { "extension", "VK_KHR_shader_integer_dot_product" }, { "name", "integerDotProduct64BitMixedSignednessAccelerated" }, { "value", extProps->integerDotProduct64BitMixedSignednessAccelerated ? "true" : "false" } });
+		pushProperty2(extension, { { "extension", "VK_KHR_shader_integer_dot_product" }, { "name", "integerDotProductAccumulatingSaturating8BitUnsignedAccelerated" }, { "value", extProps->integerDotProductAccumulatingSaturating8BitUnsignedAccelerated ? "true" : "false" } });
+		pushProperty2(extension, { { "extension", "VK_KHR_shader_integer_dot_product" }, { "name", "integerDotProductAccumulatingSaturating8BitSignedAccelerated" }, { "value", extProps->integerDotProductAccumulatingSaturating8BitSignedAccelerated ? "true" : "false" } });
+		pushProperty2(extension, { { "extension", "VK_KHR_shader_integer_dot_product" }, { "name", "integerDotProductAccumulatingSaturating8BitMixedSignednessAccelerated" }, { "value", extProps->integerDotProductAccumulatingSaturating8BitMixedSignednessAccelerated ? "true" : "false" } });
+		pushProperty2(extension, { { "extension", "VK_KHR_shader_integer_dot_product" }, { "name", "integerDotProductAccumulatingSaturating4x8BitPackedUnsignedAccelerated" }, { "value", extProps->integerDotProductAccumulatingSaturating4x8BitPackedUnsignedAccelerated ? "true" : "false" } });
+		pushProperty2(extension, { { "extension", "VK_KHR_shader_integer_dot_product" }, { "name", "integerDotProductAccumulatingSaturating4x8BitPackedSignedAccelerated" }, { "value", extProps->integerDotProductAccumulatingSaturating4x8BitPackedSignedAccelerated ? "true" : "false" } });
+		pushProperty2(extension, { { "extension", "VK_KHR_shader_integer_dot_product" }, { "name", "integerDotProductAccumulatingSaturating4x8BitPackedMixedSignednessAccelerated" }, { "value", extProps->integerDotProductAccumulatingSaturating4x8BitPackedMixedSignednessAccelerated ? "true" : "false" } });
+		pushProperty2(extension, { { "extension", "VK_KHR_shader_integer_dot_product" }, { "name", "integerDotProductAccumulatingSaturating16BitUnsignedAccelerated" }, { "value", extProps->integerDotProductAccumulatingSaturating16BitUnsignedAccelerated ? "true" : "false" } });
+		pushProperty2(extension, { { "extension", "VK_KHR_shader_integer_dot_product" }, { "name", "integerDotProductAccumulatingSaturating16BitSignedAccelerated" }, { "value", extProps->integerDotProductAccumulatingSaturating16BitSignedAccelerated ? "true" : "false" } });
+		pushProperty2(extension, { { "extension", "VK_KHR_shader_integer_dot_product" }, { "name", "integerDotProductAccumulatingSaturating16BitMixedSignednessAccelerated" }, { "value", extProps->integerDotProductAccumulatingSaturating16BitMixedSignednessAccelerated ? "true" : "false" } });
+		pushProperty2(extension, { { "extension", "VK_KHR_shader_integer_dot_product" }, { "name", "integerDotProductAccumulatingSaturating32BitUnsignedAccelerated" }, { "value", extProps->integerDotProductAccumulatingSaturating32BitUnsignedAccelerated ? "true" : "false" } });
+		pushProperty2(extension, { { "extension", "VK_KHR_shader_integer_dot_product" }, { "name", "integerDotProductAccumulatingSaturating32BitSignedAccelerated" }, { "value", extProps->integerDotProductAccumulatingSaturating32BitSignedAccelerated ? "true" : "false" } });
+		pushProperty2(extension, { { "extension", "VK_KHR_shader_integer_dot_product" }, { "name", "integerDotProductAccumulatingSaturating32BitMixedSignednessAccelerated" }, { "value", extProps->integerDotProductAccumulatingSaturating32BitMixedSignednessAccelerated ? "true" : "false" } });
+		pushProperty2(extension, { { "extension", "VK_KHR_shader_integer_dot_product" }, { "name", "integerDotProductAccumulatingSaturating64BitUnsignedAccelerated" }, { "value", extProps->integerDotProductAccumulatingSaturating64BitUnsignedAccelerated ? "true" : "false" } });
+		pushProperty2(extension, { { "extension", "VK_KHR_shader_integer_dot_product" }, { "name", "integerDotProductAccumulatingSaturating64BitSignedAccelerated" }, { "value", extProps->integerDotProductAccumulatingSaturating64BitSignedAccelerated ? "true" : "false" } });
+		pushProperty2(extension, { { "extension", "VK_KHR_shader_integer_dot_product" }, { "name", "integerDotProductAccumulatingSaturating64BitMixedSignednessAccelerated" }, { "value", extProps->integerDotProductAccumulatingSaturating64BitMixedSignednessAccelerated ? "true" : "false" } });
 		delete extProps;
 	}
 	if (extensionSupported("VK_KHR_fragment_shader_barycentric")) {
@@ -752,7 +752,7 @@ void VulkanDeviceInfoExtensions::readPhysicalProperties_KHR() {
 		extProps->sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_FRAGMENT_SHADER_BARYCENTRIC_PROPERTIES_KHR;
 		deviceProps2 = initDeviceProperties2(extProps);
 		vulkanContext.vkGetPhysicalDeviceProperties2KHR(handle, &deviceProps2);
-		pushProperty2(extension, { { "extension", "VK_KHR_fragment_shader_barycentric" }, { "name", "triStripVertexOrderIndependentOfProvokingVertex" }, { "value", extProps->triStripVertexOrderIndependentOfProvokingVertex } });
+		pushProperty2(extension, { { "extension", "VK_KHR_fragment_shader_barycentric" }, { "name", "triStripVertexOrderIndependentOfProvokingVertex" }, { "value", extProps->triStripVertexOrderIndependentOfProvokingVertex ? "true" : "false" } });
 		delete extProps;
 	}
 	if (extensionSupported("VK_KHR_maintenance4")) {
@@ -887,10 +887,10 @@ void VulkanDeviceInfoExtensions::readPhysicalProperties_NV() {
 		vulkanContext.vkGetPhysicalDeviceProperties2KHR(handle, &deviceProps2);
 		pushProperty2(extension, { { "extension", "VK_NV_optical_flow" }, { "name", "supportedOutputGridSizes" }, { "value", extProps->supportedOutputGridSizes } });
 		pushProperty2(extension, { { "extension", "VK_NV_optical_flow" }, { "name", "supportedHintGridSizes" }, { "value", extProps->supportedHintGridSizes } });
-		pushProperty2(extension, { { "extension", "VK_NV_optical_flow" }, { "name", "hintSupported" }, { "value", extProps->hintSupported } });
-		pushProperty2(extension, { { "extension", "VK_NV_optical_flow" }, { "name", "costSupported" }, { "value", extProps->costSupported } });
-		pushProperty2(extension, { { "extension", "VK_NV_optical_flow" }, { "name", "bidirectionalFlowSupported" }, { "value", extProps->bidirectionalFlowSupported } });
-		pushProperty2(extension, { { "extension", "VK_NV_optical_flow" }, { "name", "globalFlowSupported" }, { "value", extProps->globalFlowSupported } });
+		pushProperty2(extension, { { "extension", "VK_NV_optical_flow" }, { "name", "hintSupported" }, { "value", extProps->hintSupported ? "true" : "false" } });
+		pushProperty2(extension, { { "extension", "VK_NV_optical_flow" }, { "name", "costSupported" }, { "value", extProps->costSupported ? "true" : "false" } });
+		pushProperty2(extension, { { "extension", "VK_NV_optical_flow" }, { "name", "bidirectionalFlowSupported" }, { "value", extProps->bidirectionalFlowSupported ? "true" : "false" } });
+		pushProperty2(extension, { { "extension", "VK_NV_optical_flow" }, { "name", "globalFlowSupported" }, { "value", extProps->globalFlowSupported ? "true" : "false" } });
 		pushProperty2(extension, { { "extension", "VK_NV_optical_flow" }, { "name", "minWidth" }, { "value", extProps->minWidth } });
 		pushProperty2(extension, { { "extension", "VK_NV_optical_flow" }, { "name", "minHeight" }, { "value", extProps->minHeight } });
 		pushProperty2(extension, { { "extension", "VK_NV_optical_flow" }, { "name", "maxWidth" }, { "value", extProps->maxWidth } });
@@ -916,7 +916,7 @@ void VulkanDeviceInfoExtensions::readPhysicalProperties_NVX() {
 		extProps->sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_MULTIVIEW_PER_VIEW_ATTRIBUTES_PROPERTIES_NVX;
 		deviceProps2 = initDeviceProperties2(extProps);
 		vulkanContext.vkGetPhysicalDeviceProperties2KHR(handle, &deviceProps2);
-		pushProperty2(extension, { { "extension", "VK_NVX_multiview_per_view_attributes" }, { "name", "perViewPositionAllComponents" }, { "value", extProps->perViewPositionAllComponents } });
+		pushProperty2(extension, { { "extension", "VK_NVX_multiview_per_view_attributes" }, { "name", "perViewPositionAllComponents" }, { "value", extProps->perViewPositionAllComponents ? "true" : "false" } });
 		delete extProps;
 	}
 }

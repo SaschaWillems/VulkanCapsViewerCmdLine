@@ -206,6 +206,9 @@ class CppBuilder
                 case 'VkExtent2D':
                     $jsonValue = "{ extProps->$name.width, extProps->$name.height }";
                     break;
+                case 'VkBool32':
+                    $jsonValue = "extProps->$name ? \"true\" : \"false\"";
+                    break;
                 default:
                     // @todo: Convert to string? (necessary with Qt due to problems handling large number)
                     $jsonValue = "extProps->".$name;
