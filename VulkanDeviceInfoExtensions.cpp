@@ -157,6 +157,7 @@ void VulkanDeviceInfoExtensions::readPhysicalProperties_EXT() {
 		VkPhysicalDeviceProperties2 deviceProps2(initDeviceProperties2(&extProps));
 		vulkanContext.vkGetPhysicalDeviceProperties2KHR(handle, &deviceProps2);
 		pushProperty2(extension, { { "extension", "VK_EXT_sample_locations" }, { "name", "sampleLocationSampleCounts" }, { "value", extProps.sampleLocationSampleCounts } });
+		pushProperty2(extension, { { "extension", "VK_EXT_sample_locations" }, { "name", "maxSampleLocationGridSize" }, { "value", { extProps.maxSampleLocationGridSize.width, extProps.maxSampleLocationGridSize.height } } });
 		pushProperty2(extension, { { "extension", "VK_EXT_sample_locations" }, { "name", "sampleLocationCoordinateRange" }, { "value", extProps.sampleLocationCoordinateRange } });
 		pushProperty2(extension, { { "extension", "VK_EXT_sample_locations" }, { "name", "sampleLocationSubPixelBits" }, { "value", extProps.sampleLocationSubPixelBits } });
 		pushProperty2(extension, { { "extension", "VK_EXT_sample_locations" }, { "name", "variableSampleLocations" }, { "value", extProps.variableSampleLocations } });
@@ -231,6 +232,8 @@ void VulkanDeviceInfoExtensions::readPhysicalProperties_EXT() {
 		VkPhysicalDeviceFragmentDensityMapPropertiesEXT extProps { VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_FRAGMENT_DENSITY_MAP_PROPERTIES_EXT };
 		VkPhysicalDeviceProperties2 deviceProps2(initDeviceProperties2(&extProps));
 		vulkanContext.vkGetPhysicalDeviceProperties2KHR(handle, &deviceProps2);
+		pushProperty2(extension, { { "extension", "VK_EXT_fragment_density_map" }, { "name", "minFragmentDensityTexelSize" }, { "value", { extProps.minFragmentDensityTexelSize.width, extProps.minFragmentDensityTexelSize.height } } });
+		pushProperty2(extension, { { "extension", "VK_EXT_fragment_density_map" }, { "name", "maxFragmentDensityTexelSize" }, { "value", { extProps.maxFragmentDensityTexelSize.width, extProps.maxFragmentDensityTexelSize.height } } });
 		pushProperty2(extension, { { "extension", "VK_EXT_fragment_density_map" }, { "name", "fragmentDensityInvocations" }, { "value", extProps.fragmentDensityInvocations } });
 	}
 	if (extensionSupported("VK_EXT_subgroup_size_control")) {
@@ -297,6 +300,25 @@ void VulkanDeviceInfoExtensions::readPhysicalProperties_EXT() {
 		pushProperty2(extension, { { "extension", "VK_EXT_descriptor_buffer" }, { "name", "maxSamplerDescriptorBufferBindings" }, { "value", extProps.maxSamplerDescriptorBufferBindings } });
 		pushProperty2(extension, { { "extension", "VK_EXT_descriptor_buffer" }, { "name", "maxEmbeddedImmutableSamplerBindings" }, { "value", extProps.maxEmbeddedImmutableSamplerBindings } });
 		pushProperty2(extension, { { "extension", "VK_EXT_descriptor_buffer" }, { "name", "maxEmbeddedImmutableSamplers" }, { "value", extProps.maxEmbeddedImmutableSamplers } });
+		pushProperty2(extension, { { "extension", "VK_EXT_descriptor_buffer" }, { "name", "bufferCaptureReplayDescriptorDataSize" }, { "value", extProps.bufferCaptureReplayDescriptorDataSize } });
+		pushProperty2(extension, { { "extension", "VK_EXT_descriptor_buffer" }, { "name", "imageCaptureReplayDescriptorDataSize" }, { "value", extProps.imageCaptureReplayDescriptorDataSize } });
+		pushProperty2(extension, { { "extension", "VK_EXT_descriptor_buffer" }, { "name", "imageViewCaptureReplayDescriptorDataSize" }, { "value", extProps.imageViewCaptureReplayDescriptorDataSize } });
+		pushProperty2(extension, { { "extension", "VK_EXT_descriptor_buffer" }, { "name", "samplerCaptureReplayDescriptorDataSize" }, { "value", extProps.samplerCaptureReplayDescriptorDataSize } });
+		pushProperty2(extension, { { "extension", "VK_EXT_descriptor_buffer" }, { "name", "accelerationStructureCaptureReplayDescriptorDataSize" }, { "value", extProps.accelerationStructureCaptureReplayDescriptorDataSize } });
+		pushProperty2(extension, { { "extension", "VK_EXT_descriptor_buffer" }, { "name", "samplerDescriptorSize" }, { "value", extProps.samplerDescriptorSize } });
+		pushProperty2(extension, { { "extension", "VK_EXT_descriptor_buffer" }, { "name", "combinedImageSamplerDescriptorSize" }, { "value", extProps.combinedImageSamplerDescriptorSize } });
+		pushProperty2(extension, { { "extension", "VK_EXT_descriptor_buffer" }, { "name", "sampledImageDescriptorSize" }, { "value", extProps.sampledImageDescriptorSize } });
+		pushProperty2(extension, { { "extension", "VK_EXT_descriptor_buffer" }, { "name", "storageImageDescriptorSize" }, { "value", extProps.storageImageDescriptorSize } });
+		pushProperty2(extension, { { "extension", "VK_EXT_descriptor_buffer" }, { "name", "uniformTexelBufferDescriptorSize" }, { "value", extProps.uniformTexelBufferDescriptorSize } });
+		pushProperty2(extension, { { "extension", "VK_EXT_descriptor_buffer" }, { "name", "robustUniformTexelBufferDescriptorSize" }, { "value", extProps.robustUniformTexelBufferDescriptorSize } });
+		pushProperty2(extension, { { "extension", "VK_EXT_descriptor_buffer" }, { "name", "storageTexelBufferDescriptorSize" }, { "value", extProps.storageTexelBufferDescriptorSize } });
+		pushProperty2(extension, { { "extension", "VK_EXT_descriptor_buffer" }, { "name", "robustStorageTexelBufferDescriptorSize" }, { "value", extProps.robustStorageTexelBufferDescriptorSize } });
+		pushProperty2(extension, { { "extension", "VK_EXT_descriptor_buffer" }, { "name", "uniformBufferDescriptorSize" }, { "value", extProps.uniformBufferDescriptorSize } });
+		pushProperty2(extension, { { "extension", "VK_EXT_descriptor_buffer" }, { "name", "robustUniformBufferDescriptorSize" }, { "value", extProps.robustUniformBufferDescriptorSize } });
+		pushProperty2(extension, { { "extension", "VK_EXT_descriptor_buffer" }, { "name", "storageBufferDescriptorSize" }, { "value", extProps.storageBufferDescriptorSize } });
+		pushProperty2(extension, { { "extension", "VK_EXT_descriptor_buffer" }, { "name", "robustStorageBufferDescriptorSize" }, { "value", extProps.robustStorageBufferDescriptorSize } });
+		pushProperty2(extension, { { "extension", "VK_EXT_descriptor_buffer" }, { "name", "inputAttachmentDescriptorSize" }, { "value", extProps.inputAttachmentDescriptorSize } });
+		pushProperty2(extension, { { "extension", "VK_EXT_descriptor_buffer" }, { "name", "accelerationStructureDescriptorSize" }, { "value", extProps.accelerationStructureDescriptorSize } });
 		pushProperty2(extension, { { "extension", "VK_EXT_descriptor_buffer" }, { "name", "maxSamplerDescriptorBufferRange" }, { "value", extProps.maxSamplerDescriptorBufferRange } });
 		pushProperty2(extension, { { "extension", "VK_EXT_descriptor_buffer" }, { "name", "maxResourceDescriptorBufferRange" }, { "value", extProps.maxResourceDescriptorBufferRange } });
 		pushProperty2(extension, { { "extension", "VK_EXT_descriptor_buffer" }, { "name", "samplerDescriptorBufferAddressSpaceSize" }, { "value", extProps.samplerDescriptorBufferAddressSpaceSize } });
@@ -567,10 +589,13 @@ void VulkanDeviceInfoExtensions::readPhysicalProperties_KHR() {
 		VkPhysicalDeviceFragmentShadingRatePropertiesKHR extProps { VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_FRAGMENT_SHADING_RATE_PROPERTIES_KHR };
 		VkPhysicalDeviceProperties2 deviceProps2(initDeviceProperties2(&extProps));
 		vulkanContext.vkGetPhysicalDeviceProperties2KHR(handle, &deviceProps2);
+		pushProperty2(extension, { { "extension", "VK_KHR_fragment_shading_rate" }, { "name", "minFragmentShadingRateAttachmentTexelSize" }, { "value", { extProps.minFragmentShadingRateAttachmentTexelSize.width, extProps.minFragmentShadingRateAttachmentTexelSize.height } } });
+		pushProperty2(extension, { { "extension", "VK_KHR_fragment_shading_rate" }, { "name", "maxFragmentShadingRateAttachmentTexelSize" }, { "value", { extProps.maxFragmentShadingRateAttachmentTexelSize.width, extProps.maxFragmentShadingRateAttachmentTexelSize.height } } });
 		pushProperty2(extension, { { "extension", "VK_KHR_fragment_shading_rate" }, { "name", "maxFragmentShadingRateAttachmentTexelSizeAspectRatio" }, { "value", extProps.maxFragmentShadingRateAttachmentTexelSizeAspectRatio } });
 		pushProperty2(extension, { { "extension", "VK_KHR_fragment_shading_rate" }, { "name", "primitiveFragmentShadingRateWithMultipleViewports" }, { "value", extProps.primitiveFragmentShadingRateWithMultipleViewports } });
 		pushProperty2(extension, { { "extension", "VK_KHR_fragment_shading_rate" }, { "name", "layeredShadingRateAttachments" }, { "value", extProps.layeredShadingRateAttachments } });
 		pushProperty2(extension, { { "extension", "VK_KHR_fragment_shading_rate" }, { "name", "fragmentShadingRateNonTrivialCombinerOps" }, { "value", extProps.fragmentShadingRateNonTrivialCombinerOps } });
+		pushProperty2(extension, { { "extension", "VK_KHR_fragment_shading_rate" }, { "name", "maxFragmentSize" }, { "value", { extProps.maxFragmentSize.width, extProps.maxFragmentSize.height } } });
 		pushProperty2(extension, { { "extension", "VK_KHR_fragment_shading_rate" }, { "name", "maxFragmentSizeAspectRatio" }, { "value", extProps.maxFragmentSizeAspectRatio } });
 		pushProperty2(extension, { { "extension", "VK_KHR_fragment_shading_rate" }, { "name", "maxFragmentShadingRateCoverageSamples" }, { "value", extProps.maxFragmentShadingRateCoverageSamples } });
 		pushProperty2(extension, { { "extension", "VK_KHR_fragment_shading_rate" }, { "name", "maxFragmentShadingRateRasterizationSamples" }, { "value", extProps.maxFragmentShadingRateRasterizationSamples } });
@@ -647,6 +672,7 @@ void VulkanDeviceInfoExtensions::readPhysicalProperties_NV() {
 		VkPhysicalDeviceShadingRateImagePropertiesNV extProps { VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_SHADING_RATE_IMAGE_PROPERTIES_NV };
 		VkPhysicalDeviceProperties2 deviceProps2(initDeviceProperties2(&extProps));
 		vulkanContext.vkGetPhysicalDeviceProperties2KHR(handle, &deviceProps2);
+		pushProperty2(extension, { { "extension", "VK_NV_shading_rate_image" }, { "name", "shadingRateTexelSize" }, { "value", { extProps.shadingRateTexelSize.width, extProps.shadingRateTexelSize.height } } });
 		pushProperty2(extension, { { "extension", "VK_NV_shading_rate_image" }, { "name", "shadingRatePaletteSize" }, { "value", extProps.shadingRatePaletteSize } });
 		pushProperty2(extension, { { "extension", "VK_NV_shading_rate_image" }, { "name", "shadingRateMaxCoarseSamples" }, { "value", extProps.shadingRateMaxCoarseSamples } });
 	}
@@ -767,6 +793,7 @@ void VulkanDeviceInfoExtensions::readPhysicalProperties_QCOM() {
 		VkPhysicalDeviceFragmentDensityMapOffsetPropertiesQCOM extProps { VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_FRAGMENT_DENSITY_MAP_OFFSET_PROPERTIES_QCOM };
 		VkPhysicalDeviceProperties2 deviceProps2(initDeviceProperties2(&extProps));
 		vulkanContext.vkGetPhysicalDeviceProperties2KHR(handle, &deviceProps2);
+		pushProperty2(extension, { { "extension", "VK_QCOM_fragment_density_map_offset" }, { "name", "fragmentDensityOffsetGranularity" }, { "value", { extProps.fragmentDensityOffsetGranularity.width, extProps.fragmentDensityOffsetGranularity.height } } });
 	}
 	if (extensionSupported("VK_QCOM_image_processing")) {
 		const char* extension("VK_QCOM_image_processing");
@@ -774,6 +801,9 @@ void VulkanDeviceInfoExtensions::readPhysicalProperties_QCOM() {
 		VkPhysicalDeviceProperties2 deviceProps2(initDeviceProperties2(&extProps));
 		vulkanContext.vkGetPhysicalDeviceProperties2KHR(handle, &deviceProps2);
 		pushProperty2(extension, { { "extension", "VK_QCOM_image_processing" }, { "name", "maxWeightFilterPhases" }, { "value", extProps.maxWeightFilterPhases } });
+		pushProperty2(extension, { { "extension", "VK_QCOM_image_processing" }, { "name", "maxWeightFilterDimension" }, { "value", { extProps.maxWeightFilterDimension.width, extProps.maxWeightFilterDimension.height } } });
+		pushProperty2(extension, { { "extension", "VK_QCOM_image_processing" }, { "name", "maxBlockMatchRegion" }, { "value", { extProps.maxBlockMatchRegion.width, extProps.maxBlockMatchRegion.height } } });
+		pushProperty2(extension, { { "extension", "VK_QCOM_image_processing" }, { "name", "maxBoxFilterBlockSize" }, { "value", { extProps.maxBoxFilterBlockSize.width, extProps.maxBoxFilterBlockSize.height } } });
 	}
 }
 
