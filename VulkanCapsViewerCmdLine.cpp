@@ -91,7 +91,6 @@ nlohmann::json getEnvironment()
         { "comment", "" },
         { "submitter", "" },
         { "reportversion", reportVersion},
-        // @tdodo: os architecture, version, name for os
     };
 
 #ifdef _WIN32
@@ -103,6 +102,16 @@ nlohmann::json getEnvironment()
     json["architecture"] = "i386";
 #endif
 #endif
+
+#ifdef __linux__
+    struct utsname osinfo;
+    if (uname(&osinfo) == 0) {
+        json["name"] = osinfo.sysname;
+        json["version"] = osinfo.version;
+        json["architecture"] = osinfo.machine;
+    }
+#endif
+
     return json;
 }
 

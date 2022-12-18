@@ -28,6 +28,9 @@
 #ifdef _WIN32
 #include <Windows.h>
 #endif
+#ifdef __linux__
+#include <sys/utsname.h>
+#endif
 
 #include "nlohmann/json.hpp"
 
