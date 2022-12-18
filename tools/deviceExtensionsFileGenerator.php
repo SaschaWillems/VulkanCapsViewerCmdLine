@@ -162,8 +162,9 @@ class CppBuilder
         $sType = TypeContainer::getsType($extension->features2);
         $res = "\tif (extensionSupported(\"{$extension->name}\")) {\n";
         $res .= "\t\tconst char* extension(\"{$extension->name}\");\n";
-        $res .= "\t\t{$extension->features2['name']} extFeatures { $sType };\n";
-        $res .= "\t\tVkPhysicalDeviceFeatures2 deviceFeatures2(initDeviceFeatures2(&extFeatures));\n";
+        $res .= "\t\t{$extension->features2['name']}* extFeatures = new {$extension->features2['name']}{};\n";
+        $res .= "\t\textFeatures->sType = $sType;\n";
+        $res .= "\t\tdeviceFeatures2 = initDeviceFeatures2(extFeatures);\n";
         $res .= "\t\tvulkanContext.vkGetPhysicalDeviceFeatures2KHR(handle, &deviceFeatures2);\n";
         foreach ($extension->features2->member as $member) {
             // Skip types that are not related to feature details
@@ -172,8 +173,9 @@ class CppBuilder
                 continue;
             }
             $name = (string)$member->name;       
-            $res .= "\t\tpushFeature2(extension, \"$name\", extFeatures.$name);\n";
+            $res .= "\t\tpushFeature2(extension, \"$name\", extFeatures->$name);\n";
         }
+        $res .= "\t\tdelete extFeatures;\n";
         $res .= "\t}\n";
         return $res;
     }
@@ -183,8 +185,9 @@ class CppBuilder
         $sType = TypeContainer::getsType($extension->properties2);
         $res = "\tif (extensionSupported(\"{$extension->name}\")) {\n";
         $res .= "\t\tconst char* extension(\"{$extension->name}\");\n";
-        $res .= "\t\t{$extension->properties2['name']} extProps { $sType };\n";
-        $res .= "\t\tVkPhysicalDeviceProperties2 deviceProps2(initDeviceProperties2(&extProps));\n";
+        $res .= "\t\t{$extension->properties2['name']}* extProps = new {$extension->properties2['name']}{};\n";
+        $res .= "\t\textProps->sType = $sType;\n";
+        $res .= "\t\tdeviceProps2 = initDeviceProperties2(extProps);\n";
         $res .= "\t\tvulkanContext.vkGetPhysicalDeviceProperties2KHR(handle, &deviceProps2);\n";
         // @todo: QVariant vs. QVariant::fromValue
         foreach ($extension->properties2->member as $member) {
@@ -198,18 +201,19 @@ class CppBuilder
             switch ($vktype) {
                 case 'VkConformanceVersionKHR':
                 case 'VkConformanceVersion':
-                    $jsonValue = "Utils::conformanceVersionKHRString(extProps.$name)";
+                    $jsonValue = "Utils::conformanceVersionKHRString(extProps->$name)";
                     break;
                 case 'VkExtent2D':
-                    $jsonValue = "{ extProps.$name.width, extProps.$name.height }";
+                    $jsonValue = "{ extProps->$name.width, extProps->$name.height }";
                     break;
                 default:
                     // @todo: Convert to string? (necessary with Qt due to problems handling large number)
-                    $jsonValue = "extProps.".$name;
+                    $jsonValue = "extProps->".$name;
             }
             $jsonNode = sprintf('{ { "extension", "%s" }, { "name", "%s" }, { "value", %s } }', $extension->name, $name, $jsonValue);
             $res .= "\t\tpushProperty2(extension, $jsonNode);\n";
         }
+        $res .= "\t\tdelete extProps;\n";
         $res .= "\t}\n";
         return $res;
     }
@@ -275,6 +279,7 @@ class CppBuilder
             });
             if (count($ext_arr) > 0) {
                 $cpp_features_block .= "void VulkanDeviceInfoExtensions::readPhysicalFeatures_$ext_group() {\n";
+                $cpp_features_block .= "\tVkPhysicalDeviceFeatures2 deviceFeatures2{};\n";
                 foreach ($ext_arr as $extension) {
                     $cpp_features_block .= $this->generateFeatures2CodeBlock($extension);
                 }
@@ -286,6 +291,7 @@ class CppBuilder
             });
             if (count($ext_arr) > 0) {
                 $cpp_properties_block .= "void VulkanDeviceInfoExtensions::readPhysicalProperties_$ext_group() {\n";
+                $cpp_properties_block .= "\tVkPhysicalDeviceProperties2 deviceProps2{};\n";
                 foreach ($ext_arr as $extension) {
                     $cpp_properties_block .= $this->generateProperties2CodeBlock($extension);
                 }
