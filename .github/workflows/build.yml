@@ -11,12 +11,17 @@ on:
 jobs:
   build_ubuntu_x11:
     name: Build Ubuntu
-    runs-on: ubuntu-16.04
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v3
         with:
           submodules: "recursive"
+
+      - name: Install Vulkan SDK
+        run: |
+          sudo apt update
+          sudo apt install libvulkan-dev          
 
       - name: Build
         run: |
