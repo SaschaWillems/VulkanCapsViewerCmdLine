@@ -50,6 +50,7 @@ public:
     nlohmann::json getMemoryTypes();
     nlohmann::json getProperties();
     nlohmann::json getQueueFamilies();
+    nlohmann::json getSurfaceCapabilities();
 
     nlohmann::json getCore11();
     nlohmann::json getCore12();

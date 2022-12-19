@@ -458,17 +458,17 @@ nlohmann::json VulkanPhysicalDevice::getQueueFamilies()
     vkGetPhysicalDeviceQueueFamilyProperties(handle, &queueFamilyCount, &queueFamilyProperties.front());
 
     auto jsonArray = nlohmann::json::array();
+    uint32_t index = 0;
     for (auto& queueFamily : queueFamilyProperties) {
-        bool supportsPresent = false;
-        // @todo
-        //if ((surface != VK_NULL_HANDLE) && (pfnGetPhysicalDeviceSurfaceSupportKHR)) {
-        //    vkGetPhysicalDeviceSurfaceSupportKHR(device, index, surface, &queueFamilyInfo.supportsPresent);
-        //}
+        VkBool32 supportsPresent = false;
+        if ((vulkanContext.surface != VK_NULL_HANDLE) && (vulkanContext.vkGetPhysicalDeviceSurfaceSupportKHR)) {
+            vulkanContext.vkGetPhysicalDeviceSurfaceSupportKHR(handle, index, vulkanContext.surface, &supportsPresent);
+        }
         jsonArray.push_back(
             {
                 { "queueCount", queueFamily.queueCount },
                 { "queueFlags", queueFamily.queueFlags },
-                { "supportsPresent", supportsPresent },
+                { "supportsPresent", (bool)supportsPresent },
                 { "timestampValidBits", queueFamily.timestampValidBits },
                 { "minImageTransferGranularity",
                     {
@@ -479,8 +479,80 @@ nlohmann::json VulkanPhysicalDevice::getQueueFamilies()
                 },
             }
         );
+        index++;
     }
     return jsonArray;
+}
+
+nlohmann::json VulkanPhysicalDevice::getSurfaceCapabilities()
+{
+    nlohmann::json json;
+
+    if (vulkanContext.surface == VK_NULL_HANDLE) {
+        return json;
+    }
+
+    VkSurfaceCapabilitiesKHR surfaceCapabilities{};
+    vkGetPhysicalDeviceSurfaceCapabilitiesKHR(handle, vulkanContext.surface, &surfaceCapabilities);
+
+    json = {
+        { "maxImageArrayLayers", surfaceCapabilities.maxImageArrayLayers },
+        { "minImageCount", surfaceCapabilities.minImageCount },
+        { "maxImageCount", surfaceCapabilities.maxImageCount },
+        // Only for compatibility
+        { "maxImageExtent",
+            {
+                { "height", surfaceCapabilities.maxImageExtent.height },
+                { "width", surfaceCapabilities.maxImageExtent.width },
+            }
+        },
+        // Only for compatibility
+        { "minImageExtent",
+            {
+                { "height", surfaceCapabilities.minImageExtent.height },
+                { "width", surfaceCapabilities.minImageExtent.width },
+            }
+        },
+        { "presentmodes", nlohmann::json::array() },
+        { "surfaceExtension", vulkanContext.surfaceExtension },
+        { "supportedCompositeAlpha", surfaceCapabilities.supportedCompositeAlpha },
+        { "supportedTransforms", surfaceCapabilities.supportedTransforms },
+        { "supportedUsageFlags", surfaceCapabilities.supportedUsageFlags },
+        { "surfaceformats", nlohmann::json::array() },
+        // Only for compatibility
+        { "validSurface", true }
+    };
+
+    // Present modes
+    uint32_t presentModeCount;
+    if (vkGetPhysicalDeviceSurfacePresentModesKHR(handle, vulkanContext.surface, &presentModeCount, nullptr) == VK_SUCCESS) {
+        std::vector<VkPresentModeKHR> presentModes(presentModeCount);
+        if (presentModeCount > 0) {
+            vkGetPhysicalDeviceSurfacePresentModesKHR(handle, vulkanContext.surface, &presentModeCount, presentModes.data());
+            json["presentmodes"] = presentModes;
+        }
+    }
+
+    // Surface formats
+    uint32_t surfaceFormatCount;
+    if (vkGetPhysicalDeviceSurfaceFormatsKHR(handle, vulkanContext.surface, &surfaceFormatCount, nullptr) == VK_SUCCESS) {
+        std::vector<VkSurfaceFormatKHR> surfaceFormats(surfaceFormatCount);
+        if (surfaceFormatCount > 0) {
+            vkGetPhysicalDeviceSurfaceFormatsKHR(handle, vulkanContext.surface, &surfaceFormatCount, surfaceFormats.data());
+            auto jsonArray = nlohmann::json::array();
+            for (auto& surfaceFormat : surfaceFormats) {
+                jsonArray.push_back(
+                    {
+                        { "colorSpace", surfaceFormat.colorSpace },
+                        { "format", surfaceFormat.format },
+                    }
+                );
+            }
+            json["surfaceformats"] = jsonArray;
+        }
+    }
+
+    return json;
 }
 
 nlohmann::json VulkanPhysicalDevice::getCore11()

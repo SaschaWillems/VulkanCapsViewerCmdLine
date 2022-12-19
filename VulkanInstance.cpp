@@ -45,27 +45,24 @@ bool VulkanInstance::create()
     instanceCreateInfo.pApplicationInfo = &appInfo;
 
     // Platform specific surface extensions
-    std::vector<std::string> possibleSurfaceExtensions = {
 #if defined(VK_USE_PLATFORM_ANDROID_KHR)
-      VK_KHR_ANDROID_SURFACE_EXTENSION_NAME,
+    vulkanContext.surfaceExtension = VK_KHR_ANDROID_SURFACE_EXTENSION_NAME;
 #endif
 #if defined(VK_USE_PLATFORM_WAYLAND_KHR)
-      VK_KHR_WAYLAND_SURFACE_EXTENSION_NAME,
+    vulkanContext.surfaceExtension = VK_KHR_WAYLAND_SURFACE_EXTENSION_NAME;
 #endif
 #if defined(VK_USE_PLATFORM_WIN32_KHR)
-      VK_KHR_WIN32_SURFACE_EXTENSION_NAME,
+      vulkanContext.surfaceExtension = VK_KHR_WIN32_SURFACE_EXTENSION_NAME;
 #endif
 #if defined(VK_USE_PLATFORM_XCB_KHR)
-      VK_KHR_XCB_SURFACE_EXTENSION_NAME,
+      vulkanContext.surfaceExtension = VK_KHR_XCB_SURFACE_EXTENSION_NAME;
 #endif
 #if defined(VK_USE_PLATFORM_MACOS_MVK)
-    VK_MVK_MACOS_SURFACE_EXTENSION_NAME,
+      vulkanContext.surfaceExtension = VK_MVK_MACOS_SURFACE_EXTENSION_NAME;
 #endif
-
 #if defined(VK_USE_PLATFORM_IOS_MVK)
-   VK_MVK_IOS_SURFACE_EXTENSION_NAME,
+      vulkanContext.surfaceExtension = VK_MVK_IOS_SURFACE_EXTENSION_NAME;
 #endif
-    };
 
     std::vector<const char*> enabledExtensions = {};
 
@@ -78,15 +75,10 @@ bool VulkanInstance::create()
         enabledExtensions.push_back(VK_KHR_SURFACE_EXTENSION_NAME);
     }
 
-    std::vector<std::string> surfaceExtensionsAvailable = {};
-
-    for (const std::string& possibleExtension : possibleSurfaceExtensions) {
-        for (const auto& availableExtension : availableExtensions) {
-            if (possibleExtension == availableExtension.extensionName) {
-                surfaceExtensionsAvailable.push_back(possibleExtension);
-                enabledExtensions.push_back(possibleExtension.c_str());
-                break;
-            }
+    for (const auto& availableExtension : availableExtensions) {
+        if (vulkanContext.surfaceExtension == availableExtension.extensionName) {
+            enabledExtensions.push_back(vulkanContext.surfaceExtension.c_str());
+            break;
         }
     }
 
