@@ -6,6 +6,7 @@ file(GLOB SOURCE ./*.cpp)
 file(GLOB HEADERS ./*.h)
 
 include_directories("external")
+include_directories("Vulkan-Headers/include")
 
 if(WIN32)
     find_library(Vulkan_LIBRARY NAMES vulkan-1 HINTS "$ENV{VULKAN_SDK}/lib" "${CMAKE_SOURCE_DIR}/libs/vulkan" REQUIRED)
