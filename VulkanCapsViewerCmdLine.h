@@ -38,3 +38,4 @@
 #include "VulkanContext.h"
 #include "VulkanInstance.h"
 #include "Utils.h"
+#include "CommandLineParser.hpp"
