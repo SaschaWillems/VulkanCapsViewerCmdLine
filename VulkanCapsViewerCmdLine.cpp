@@ -82,6 +82,22 @@ bool initVulkan()
     return true;
 }
 
+bool createSurface()
+{
+#if defined(VK_USE_PLATFORM_WIN32_KHR)
+    HINSTANCE platformHandle = GetModuleHandle(nullptr);
+    HWND platformWindow = GetConsoleWindow();
+    VkWin32SurfaceCreateInfoKHR surfaceCreateInfo = {};
+    surfaceCreateInfo.sType = VK_STRUCTURE_TYPE_WIN32_SURFACE_CREATE_INFO_KHR;
+    surfaceCreateInfo.hinstance = (HINSTANCE)platformHandle;
+    surfaceCreateInfo.hwnd = (HWND)platformWindow;
+    if (vkCreateWin32SurfaceKHR(vulkanContext.instance, &surfaceCreateInfo, nullptr, &vulkanContext.surface) != VK_SUCCESS) {
+        return false;
+    }
+#endif
+    return true;
+}
+
 // The environment node contains information on the application (versions, etc.) and the operating system
 nlohmann::json getEnvironment()
 {
@@ -132,6 +148,7 @@ void saveReport(const std::string filename, VulkanPhysicalDevice physicalDevice)
     json["memory"] = physicalDevice.getMemoryTypes();
     json["properties"] = physicalDevice.getProperties();
     json["queues"] = physicalDevice.getQueueFamilies();
+    json["surfaceCapabilities"] = physicalDevice.getSurfaceCapabilities();
     if (physicalDevice.vulkanVersionSupported(1, 2)) {
         // Check against 1.2 is correct, as the dedicated structs for 1.1 have been added with 1.2 only
         json["core11"] = physicalDevice.getCore11();
