@@ -164,8 +164,19 @@ void saveReport(const std::string filename, VulkanPhysicalDevice physicalDevice)
     file << std::setw(4) << json;
 }
 
-int main()
+int main(int argc, char* argv[])
 {
+    CommandLineParser commandLineParser{};
+    commandLineParser.add("help", { "--help", "-h"}, false, "Show help");
+    commandLineParser.add("gpulist", { "--list", "-l"}, false, "List available devices");
+    commandLineParser.add("deviceindex", { "--device", "-d" }, true, "Select device (default is 0)");
+    commandLineParser.parse(argc, argv);
+
+    if (commandLineParser.isSet("help")) {
+        commandLineParser.printHelp();
+        exit(0);
+    }
+
     initVulkan();
 
     uint32_t physicalDeviceCount = 0;
@@ -173,8 +184,33 @@ int main()
     std::vector<VkPhysicalDevice> physicalDevices(physicalDeviceCount);
     vkEnumeratePhysicalDevices(vulkanContext.instance, &physicalDeviceCount, &physicalDevices.front());
 
-    // @todo: add device selection
-    VulkanPhysicalDevice physicalDevice(physicalDevices[0]);
+    if (commandLineParser.isSet("gpulist")) {
+        std::cout << "Available devices:" << "\n";
+        for (uint32_t i = 0; i < physicalDeviceCount; i++) {
+            VkPhysicalDeviceProperties properties;
+            vkGetPhysicalDeviceProperties(physicalDevices[i], &properties);
+            std::cout << "Device [" << i << "] : " << properties.deviceName << " (Vulkan version: " << (properties.apiVersion >> 22) << "." << ((properties.apiVersion >> 12) & 0x3ff) << "." << (properties.apiVersion & 0xfff) << ")\n";
+        }
+        exit(0);
+    }
 
-    saveReport("report.json", physicalDevice);
+    createSurface();
+
+    uint32_t deviceIndex = 0;
+
+    if (commandLineParser.isSet("deviceindex")) {
+        deviceIndex = commandLineParser.getValueAsInt("deviceindex", 0);
+        if ((deviceIndex > physicalDeviceCount - 1) || (deviceIndex < 0)) {
+            std::cerr << "Error: Selected device index is out of bounds";
+            exit(-1);
+        }
+    }
+
+    VulkanPhysicalDevice physicalDevice(physicalDevices[deviceIndex]);
+
+    std::string filename = "report.json";
+
+    saveReport(filename, physicalDevice);
+
+    std::cout << "Report saved as " << filename << "\n";
 }
