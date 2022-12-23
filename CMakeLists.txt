@@ -4,7 +4,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake")
 project ("VulkanCapsViewerCmdLine")
 
 file(GLOB SOURCE ./*.cpp)
-file(GLOB HEADERS ./*.h)
+file(GLOB HEADERS ./*.h ./*.hpp)
 
 include_directories("external")
 include_directories("Vulkan-Headers/include")
