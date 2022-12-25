@@ -213,4 +213,12 @@ int main(int argc, char* argv[])
     saveReport(filename, physicalDevice);
 
     std::cout << "Report saved as " << filename << "\n";
+
+    // Cleanup
+    if (vulkanContext.surface != VK_NULL_HANDLE) {
+        vkDestroySurfaceKHR(vulkanContext.instance, vulkanContext.surface, nullptr);
+    }
+    if (vulkanContext.instance != VK_NULL_HANDLE) {
+        vkDestroyInstance(vulkanContext.instance, nullptr);
+    }
 }
