@@ -82,7 +82,7 @@ bool initVulkan()
     return true;
 }
 
-bool createSurface()
+bool createSurface(VkPhysicalDevice physicalDevice)
 {
 #if defined(VK_USE_PLATFORM_WIN32_KHR)
     HINSTANCE platformHandle = GetModuleHandle(nullptr);
@@ -94,6 +94,27 @@ bool createSurface()
     if (vkCreateWin32SurfaceKHR(vulkanContext.instance, &surfaceCreateInfo, nullptr, &vulkanContext.surface) != VK_SUCCESS) {
         return false;
     }
+#elif defined(_DIRECT2DISPLAY)
+   VkDisplayPlanePropertiesKHR plane;
+   VkDisplayModePropertiesKHR mode;
+   uint32_t planeCount = 1;
+   uint32_t modeCount = 1;
+   if (vkGetPhysicalDeviceDisplayPlanePropertiesKHR(physicalDevice, &planeCount, &plane) != VK_SUCCESS) {
+      return false;
+   }
+   if (vkGetDisplayModePropertiesKHR(physicalDevice, plane.currentDisplay, &modeCount, &mode) != VK_SUCCESS) {
+      return false;
+   }
+   VkDisplaySurfaceCreateInfoKHR surfaceCreateInfo = {};
+   surfaceCreateInfo.sType = VK_STRUCTURE_TYPE_DISPLAY_SURFACE_CREATE_INFO_KHR;
+   surfaceCreateInfo.displayMode = mode.displayMode;
+   surfaceCreateInfo.transform = VK_SURFACE_TRANSFORM_IDENTITY_BIT_KHR;
+   surfaceCreateInfo.globalAlpha = 1.0f;
+   surfaceCreateInfo.alphaMode = VK_DISPLAY_PLANE_ALPHA_PER_PIXEL_PREMULTIPLIED_BIT_KHR;
+   surfaceCreateInfo.imageExtent = mode.parameters.visibleRegion;
+   if (vkCreateDisplayPlaneSurfaceKHR(vulkanContext.instance, &surfaceCreateInfo, nullptr, &vulkanContext.surface) != VK_SUCCESS) {
+      return false;
+   }
 #endif
     return true;
 }
@@ -194,8 +215,6 @@ int main(int argc, char* argv[])
         exit(0);
     }
 
-    createSurface();
-
     uint32_t deviceIndex = 0;
 
     if (commandLineParser.isSet("deviceindex")) {
@@ -205,6 +224,8 @@ int main(int argc, char* argv[])
             exit(-1);
         }
     }
+
+    createSurface(physicalDevices[deviceIndex]);
 
     VulkanPhysicalDevice physicalDevice(physicalDevices[deviceIndex]);
 

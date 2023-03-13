@@ -63,6 +63,9 @@ bool VulkanInstance::create()
 #if defined(VK_USE_PLATFORM_IOS_MVK)
       vulkanContext.surfaceExtension = VK_MVK_IOS_SURFACE_EXTENSION_NAME;
 #endif
+#if defined(_DIRECT2DISPLAY)
+      vulkanContext.surfaceExtension = VK_KHR_DISPLAY_EXTENSION_NAME;
+#endif
 
     std::vector<const char*> enabledExtensions = {};
 
