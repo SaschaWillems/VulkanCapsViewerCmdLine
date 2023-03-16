@@ -79,6 +79,17 @@ void VulkanDeviceInfoExtensions::readPhysicalProperties_AMD() {
 }
 void VulkanDeviceInfoExtensions::readPhysicalProperties_ARM() {
 	VkPhysicalDeviceProperties2 deviceProps2{};
+	if (extensionSupported("VK_ARM_shader_core_properties")) {
+		const char* extension("VK_ARM_shader_core_properties");
+		VkPhysicalDeviceShaderCorePropertiesARM* extProps = new VkPhysicalDeviceShaderCorePropertiesARM{};
+		extProps->sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_SHADER_CORE_PROPERTIES_ARM;
+		deviceProps2 = initDeviceProperties2(extProps);
+		vulkanContext.vkGetPhysicalDeviceProperties2KHR(handle, &deviceProps2);
+		pushProperty2(extension, { { "extension", "VK_ARM_shader_core_properties" }, { "name", "pixelRate" }, { "value", extProps->pixelRate } });
+		pushProperty2(extension, { { "extension", "VK_ARM_shader_core_properties" }, { "name", "texelRate" }, { "value", extProps->texelRate } });
+		pushProperty2(extension, { { "extension", "VK_ARM_shader_core_properties" }, { "name", "fmaRate" }, { "value", extProps->fmaRate } });
+		delete extProps;
+	}
 	if (extensionSupported("VK_ARM_shader_core_builtins")) {
 		const char* extension("VK_ARM_shader_core_builtins");
 		VkPhysicalDeviceShaderCoreBuiltinsPropertiesARM* extProps = new VkPhysicalDeviceShaderCoreBuiltinsPropertiesARM{};
@@ -493,6 +504,18 @@ void VulkanDeviceInfoExtensions::readPhysicalProperties_HUAWEI() {
 		deviceProps2 = initDeviceProperties2(extProps);
 		vulkanContext.vkGetPhysicalDeviceProperties2KHR(handle, &deviceProps2);
 		pushProperty2(extension, { { "extension", "VK_HUAWEI_subpass_shading" }, { "name", "maxSubpassShadingWorkgroupSizeAspectRatio" }, { "value", extProps->maxSubpassShadingWorkgroupSizeAspectRatio } });
+		delete extProps;
+	}
+	if (extensionSupported("VK_HUAWEI_cluster_culling_shader")) {
+		const char* extension("VK_HUAWEI_cluster_culling_shader");
+		VkPhysicalDeviceClusterCullingShaderPropertiesHUAWEI* extProps = new VkPhysicalDeviceClusterCullingShaderPropertiesHUAWEI{};
+		extProps->sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_CLUSTER_CULLING_SHADER_PROPERTIES_HUAWEI;
+		deviceProps2 = initDeviceProperties2(extProps);
+		vulkanContext.vkGetPhysicalDeviceProperties2KHR(handle, &deviceProps2);
+		pushProperty2(extension, { { "extension", "VK_HUAWEI_cluster_culling_shader" }, { "name", "maxWorkGroupCount" }, { "value", extProps->maxWorkGroupCount } });
+		pushProperty2(extension, { { "extension", "VK_HUAWEI_cluster_culling_shader" }, { "name", "maxWorkGroupSize" }, { "value", extProps->maxWorkGroupSize } });
+		pushProperty2(extension, { { "extension", "VK_HUAWEI_cluster_culling_shader" }, { "name", "maxOutputClusterCount" }, { "value", extProps->maxOutputClusterCount } });
+		pushProperty2(extension, { { "extension", "VK_HUAWEI_cluster_culling_shader" }, { "name", "indirectBufferOffsetAlignment" }, { "value", extProps->indirectBufferOffsetAlignment } });
 		delete extProps;
 	}
 }
@@ -1634,6 +1657,15 @@ void VulkanDeviceInfoExtensions::readPhysicalFeatures_EXT() {
 		pushFeature2(extension, "pageableDeviceLocalMemory", extFeatures->pageableDeviceLocalMemory);
 		delete extFeatures;
 	}
+	if (extensionSupported("VK_EXT_image_sliced_view_of_3d")) {
+		const char* extension("VK_EXT_image_sliced_view_of_3d");
+		VkPhysicalDeviceImageSlicedViewOf3DFeaturesEXT* extFeatures = new VkPhysicalDeviceImageSlicedViewOf3DFeaturesEXT{};
+		extFeatures->sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_IMAGE_SLICED_VIEW_OF_3D_FEATURES_EXT;
+		deviceFeatures2 = initDeviceFeatures2(extFeatures);
+		vulkanContext.vkGetPhysicalDeviceFeatures2KHR(handle, &deviceFeatures2);
+		pushFeature2(extension, "imageSlicedViewOf3D", extFeatures->imageSlicedViewOf3D);
+		delete extFeatures;
+	}
 	if (extensionSupported("VK_EXT_depth_clamp_zero_one")) {
 		const char* extension("VK_EXT_depth_clamp_zero_one");
 		VkPhysicalDeviceDepthClampZeroOneFeaturesEXT* extFeatures = new VkPhysicalDeviceDepthClampZeroOneFeaturesEXT{};
@@ -1756,6 +1788,15 @@ void VulkanDeviceInfoExtensions::readPhysicalFeatures_EXT() {
 		pushFeature2(extension, "mutableDescriptorType", extFeatures->mutableDescriptorType);
 		delete extFeatures;
 	}
+	if (extensionSupported("VK_EXT_pipeline_library_group_handles")) {
+		const char* extension("VK_EXT_pipeline_library_group_handles");
+		VkPhysicalDevicePipelineLibraryGroupHandlesFeaturesEXT* extFeatures = new VkPhysicalDevicePipelineLibraryGroupHandlesFeaturesEXT{};
+		extFeatures->sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_PIPELINE_LIBRARY_GROUP_HANDLES_FEATURES_EXT;
+		deviceFeatures2 = initDeviceFeatures2(extFeatures);
+		vulkanContext.vkGetPhysicalDeviceFeatures2KHR(handle, &deviceFeatures2);
+		pushFeature2(extension, "pipelineLibraryGroupHandles", extFeatures->pipelineLibraryGroupHandles);
+		delete extFeatures;
+	}
 }
 void VulkanDeviceInfoExtensions::readPhysicalFeatures_HUAWEI() {
 	VkPhysicalDeviceFeatures2 deviceFeatures2{};
@@ -1775,6 +1816,16 @@ void VulkanDeviceInfoExtensions::readPhysicalFeatures_HUAWEI() {
 		deviceFeatures2 = initDeviceFeatures2(extFeatures);
 		vulkanContext.vkGetPhysicalDeviceFeatures2KHR(handle, &deviceFeatures2);
 		pushFeature2(extension, "invocationMask", extFeatures->invocationMask);
+		delete extFeatures;
+	}
+	if (extensionSupported("VK_HUAWEI_cluster_culling_shader")) {
+		const char* extension("VK_HUAWEI_cluster_culling_shader");
+		VkPhysicalDeviceClusterCullingShaderFeaturesHUAWEI* extFeatures = new VkPhysicalDeviceClusterCullingShaderFeaturesHUAWEI{};
+		extFeatures->sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_CLUSTER_CULLING_SHADER_FEATURES_HUAWEI;
+		deviceFeatures2 = initDeviceFeatures2(extFeatures);
+		vulkanContext.vkGetPhysicalDeviceFeatures2KHR(handle, &deviceFeatures2);
+		pushFeature2(extension, "clustercullingShader", extFeatures->clustercullingShader);
+		pushFeature2(extension, "multiviewClusterCullingShader", extFeatures->multiviewClusterCullingShader);
 		delete extFeatures;
 	}
 }
@@ -2416,6 +2467,15 @@ void VulkanDeviceInfoExtensions::readPhysicalFeatures_QCOM() {
 		deviceFeatures2 = initDeviceFeatures2(extFeatures);
 		vulkanContext.vkGetPhysicalDeviceFeatures2KHR(handle, &deviceFeatures2);
 		pushFeature2(extension, "multiviewPerViewViewports", extFeatures->multiviewPerViewViewports);
+		delete extFeatures;
+	}
+	if (extensionSupported("VK_QCOM_multiview_per_view_render_areas")) {
+		const char* extension("VK_QCOM_multiview_per_view_render_areas");
+		VkPhysicalDeviceMultiviewPerViewRenderAreasFeaturesQCOM* extFeatures = new VkPhysicalDeviceMultiviewPerViewRenderAreasFeaturesQCOM{};
+		extFeatures->sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_MULTIVIEW_PER_VIEW_RENDER_AREAS_FEATURES_QCOM;
+		deviceFeatures2 = initDeviceFeatures2(extFeatures);
+		vulkanContext.vkGetPhysicalDeviceFeatures2KHR(handle, &deviceFeatures2);
+		pushFeature2(extension, "multiviewPerViewRenderAreas", extFeatures->multiviewPerViewRenderAreas);
 		delete extFeatures;
 	}
 }
