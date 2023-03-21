@@ -59,6 +59,14 @@ std::string VulkanPhysicalDevice::getDriverVersion()
         uint32_t tertiaryBranch = (properties.driverVersion) & 0x003f;
         return std::to_string(major) + "." + std::to_string(minor) + "." + std::to_string(secondaryBranch) + "." + std::to_string(tertiaryBranch);
     }
+    // Broadcom
+    else if (properties.vendorID == 5348)
+    {
+        // Version encoded as human-readable (10000 * major + 100 * minor)
+        uint32_t major = properties.driverVersion / 10000;
+        uint32_t minor = (properties.driverVersion % 10000) / 100;
+        return std::to_string(major) + "." + std::to_string(minor);
+    }
     else
     {
         // todo : Add mappings for other vendors
