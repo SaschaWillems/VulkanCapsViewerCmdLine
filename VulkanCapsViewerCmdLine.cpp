@@ -1,7 +1,7 @@
 ﻿/*
  * Vulkan hardware capability viewer command line version
  *
- * Copyright (C) 2022 by Sascha Willems (www.saschawillems.de)
+ * Copyright (C) 2022-2023 by Sascha Willems (www.saschawillems.de)
  *
  * This code is free software, you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -23,6 +23,11 @@ VulkanInstance instance;
 
 const std::string appVersion = "1.0";
 const std::string reportVersion = "3.2";
+
+struct AdditionalReportData {
+    std::string submitter = "";
+    std::string comment = "";
+} additionalReportData;
 
 #ifdef _WIN32
 std::string getOsVersion() {
@@ -125,8 +130,8 @@ nlohmann::json getEnvironment()
     nlohmann::json json = {
         { "appversion", appVersion },
         { "appvariant", "commandline" },
-        { "comment", "" },
-        { "submitter", "" },
+        { "comment", additionalReportData.comment },
+        { "submitter", additionalReportData.submitter },
         { "reportversion", reportVersion},
     };
 
@@ -191,6 +196,8 @@ int main(int argc, char* argv[])
     commandLineParser.add("help", { "--help", "-h"}, false, "Show help");
     commandLineParser.add("gpulist", { "--list", "-l"}, false, "List available devices");
     commandLineParser.add("deviceindex", { "--device", "-d" }, true, "Select device (default is 0)");
+    commandLineParser.add("submitter", { "--submitter", "-s" }, true, "Add a submitter to the report (will be visible in the database)");
+    commandLineParser.add("comment", { "--comment", "-c" }, true, "Add a comment to the report (will be visible in the database)");
     commandLineParser.parse(argc, argv);
 
     if (commandLineParser.isSet("help")) {
@@ -223,6 +230,15 @@ int main(int argc, char* argv[])
             std::cerr << "Error: Selected device index is out of bounds";
             exit(-1);
         }
+    
+    }
+
+    if (commandLineParser.isSet("submitter")) {
+        additionalReportData.submitter = commandLineParser.getValueAsString("submitter", "");
+    }
+
+    if (commandLineParser.isSet("comment")) {
+        additionalReportData.comment = commandLineParser.getValueAsString("comment", "");
     }
 
     createSurface(physicalDevices[deviceIndex]);
