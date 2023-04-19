@@ -72,6 +72,7 @@ VK_EXT_global_priority_query
 VK_EXT_image_view_min_lod
 VK_EXT_multi_draw
 VK_EXT_image_2d_view_of_3d
+VK_EXT_shader_tile_image
 VK_EXT_opacity_micromap
 VK_EXT_border_color_swizzle
 VK_EXT_pageable_device_local_memory
@@ -85,6 +86,7 @@ VK_EXT_shader_module_identifier
 VK_EXT_rasterization_order_attachment_access
 VK_EXT_legacy_dithering
 VK_EXT_pipeline_protected_access
+VK_EXT_shader_object
 VK_EXT_mutable_descriptor_type
 VK_EXT_pipeline_library_group_handles
 HUAWEI
@@ -159,6 +161,7 @@ VK_NV_device_diagnostics_config
 VK_NV_fragment_shading_rate_enums
 VK_NV_ray_tracing_motion_blur
 VK_NV_external_memory_rdma
+VK_NV_displacement_micromap
 VK_NV_copy_memory_indirect
 VK_NV_memory_decompression
 VK_NV_linear_color_attachment

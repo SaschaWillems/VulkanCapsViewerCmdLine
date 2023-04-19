@@ -6,4 +6,4 @@ Unlike the [GUI hardware capability viewer](https://github.com/SaschaWillems/Vul
 
 This tool is mostly aimed at IHVs that run on platforms without a visual UI and with no direct internet access. As such, it doesn't have functionality to directly upload reports. Reports instead need to be uploaded via a web page.
 
-**Note**: If you want to use this tool and upload the reports please contact me.
+**Note**: If you want to use this tool to upload the reports please contact me.
