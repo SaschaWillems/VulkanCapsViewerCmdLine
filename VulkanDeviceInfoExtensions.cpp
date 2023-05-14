@@ -1847,6 +1847,15 @@ void VulkanDeviceInfoExtensions::readPhysicalFeatures_EXT() {
 		pushFeature2(extension, "pipelineLibraryGroupHandles", extFeatures->pipelineLibraryGroupHandles);
 		delete extFeatures;
 	}
+	if (extensionSupported("VK_EXT_attachment_feedback_loop_dynamic_state")) {
+		const char* extension("VK_EXT_attachment_feedback_loop_dynamic_state");
+		VkPhysicalDeviceAttachmentFeedbackLoopDynamicStateFeaturesEXT* extFeatures = new VkPhysicalDeviceAttachmentFeedbackLoopDynamicStateFeaturesEXT{};
+		extFeatures->sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_ATTACHMENT_FEEDBACK_LOOP_DYNAMIC_STATE_FEATURES_EXT;
+		deviceFeatures2 = initDeviceFeatures2(extFeatures);
+		vulkanContext.vkGetPhysicalDeviceFeatures2KHR(handle, &deviceFeatures2);
+		pushFeature2(extension, "attachmentFeedbackLoopDynamicState", extFeatures->attachmentFeedbackLoopDynamicState);
+		delete extFeatures;
+	}
 }
 void VulkanDeviceInfoExtensions::readPhysicalFeatures_HUAWEI() {
 	VkPhysicalDeviceFeatures2 deviceFeatures2{};
@@ -2250,6 +2259,15 @@ void VulkanDeviceInfoExtensions::readPhysicalFeatures_KHR() {
 		deviceFeatures2 = initDeviceFeatures2(extFeatures);
 		vulkanContext.vkGetPhysicalDeviceFeatures2KHR(handle, &deviceFeatures2);
 		pushFeature2(extension, "maintenance4", extFeatures->maintenance4);
+		delete extFeatures;
+	}
+	if (extensionSupported("VK_KHR_ray_tracing_position_fetch")) {
+		const char* extension("VK_KHR_ray_tracing_position_fetch");
+		VkPhysicalDeviceRayTracingPositionFetchFeaturesKHR* extFeatures = new VkPhysicalDeviceRayTracingPositionFetchFeaturesKHR{};
+		extFeatures->sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_RAY_TRACING_POSITION_FETCH_FEATURES_KHR;
+		deviceFeatures2 = initDeviceFeatures2(extFeatures);
+		vulkanContext.vkGetPhysicalDeviceFeatures2KHR(handle, &deviceFeatures2);
+		pushFeature2(extension, "rayTracingPositionFetch", extFeatures->rayTracingPositionFetch);
 		delete extFeatures;
 	}
 }
