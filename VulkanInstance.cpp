@@ -91,12 +91,15 @@ bool VulkanInstance::create()
     extensions.resize(extCount);
     vkRes = vkEnumerateInstanceExtensionProperties(nullptr, &extCount, &extensions.front());
 
-    // Check support for new property and feature queries
     for (auto& ext : extensions) {
+        // Required to read new property and feature queries
         if (strcmp(ext.extensionName, VK_KHR_GET_PHYSICAL_DEVICE_PROPERTIES_2_EXTENSION_NAME) == 0) {
             supportsDeviceProperties2 = true;
             enabledExtensions.push_back(VK_KHR_GET_PHYSICAL_DEVICE_PROPERTIES_2_EXTENSION_NAME);
-            break;
+        }
+        // (On Android) enable color space extensions so we also get wide color gamut surface formats
+        if (strcmp(ext.extensionName, VK_EXT_SWAPCHAIN_COLOR_SPACE_EXTENSION_NAME) == 0) {
+            enabledExtensions.push_back(VK_EXT_SWAPCHAIN_COLOR_SPACE_EXTENSION_NAME);
         }
     }
 
