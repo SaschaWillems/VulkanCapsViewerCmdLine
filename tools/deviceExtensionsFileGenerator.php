@@ -120,10 +120,10 @@ class ExtensionContainer
             // Skip Vulkan SC only extensions
             if ($ext_node['supported'] == 'vulkansc') {
                 continue;
-            }            
+            }
             $features2_node = null;
             $properties2_node = null;
-            // We're only interested in extensions with property or feature types                
+            // We're only interested in extensions with property or feature types
             foreach ($ext_node->require as $require) {
                 foreach ($require as $requirement) {
                     if (strcasecmp($requirement->getName, 'type')) {
@@ -176,7 +176,7 @@ class CppBuilder
             if (in_array($type, ['VkStructureType', 'void'])) {
                 continue;
             }
-            $name = (string)$member->name;       
+            $name = (string)$member->name;
             $res .= "\t\tpushFeature2(extension, \"$name\", extFeatures->$name);\n";
         }
         $res .= "\t\tdelete extFeatures;\n";
@@ -287,8 +287,17 @@ class CppBuilder
             if (count($ext_arr) > 0) {
                 $cpp_features_block .= "void VulkanDeviceInfoExtensions::readPhysicalFeatures_$ext_group() {\n";
                 $cpp_features_block .= "\tVkPhysicalDeviceFeatures2 deviceFeatures2{};\n";
+                if ($ext_group == 'QNX') {
+                    $cpp_features_block .= "#if defined(VK_USE_PLATFORM_SCREEN_QNX)\n";
+                }
+                if ($ext_group == 'ANDROID') {
+                    $cpp_features_block .= "#if defined(VK_USE_PLATFORM_ANDROID)\n";
+                }
                 foreach ($ext_arr as $extension) {
                     $cpp_features_block .= $this->generateFeatures2CodeBlock($extension);
+                }
+                if (in_array($ext_group, ['QNX', 'ANDROID']) != false) {
+                    $cpp_features_block .= "#endif\n";
                 }
                 $cpp_features_block .= "}\n";
             }
@@ -299,8 +308,17 @@ class CppBuilder
             if (count($ext_arr) > 0) {
                 $cpp_properties_block .= "void VulkanDeviceInfoExtensions::readPhysicalProperties_$ext_group() {\n";
                 $cpp_properties_block .= "\tVkPhysicalDeviceProperties2 deviceProps2{};\n";
+                if ($ext_group == 'QNX') {
+                    $cpp_properties_block .= "#if defined(VK_USE_PLATFORM_SCREEN_QNX)\n";
+                }
+                if ($ext_group == 'ANDROID') {
+                    $cpp_properties_block .= "#if defined(VK_USE_PLATFORM_ANDROID)\n";
+                }
                 foreach ($ext_arr as $extension) {
                     $cpp_properties_block .= $this->generateProperties2CodeBlock($extension);
+                }
+                if (in_array($ext_group, ['QNX', 'ANDROID']) != false) {
+                    $cpp_properties_block .= "#endif\n";
                 }
                 $cpp_properties_block .= "}\n";
             }
