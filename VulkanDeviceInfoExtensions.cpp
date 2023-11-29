@@ -122,6 +122,15 @@ void VulkanDeviceInfoExtensions::readPhysicalProperties_ARM() {
 		pushProperty2(extension, { { "extension", "VK_ARM_shader_core_properties" }, { "name", "fmaRate" }, { "value", extProps->fmaRate } });
 		delete extProps;
 	}
+	if (extensionSupported("VK_ARM_scheduling_controls")) {
+		const char* extension("VK_ARM_scheduling_controls");
+		VkPhysicalDeviceSchedulingControlsPropertiesARM* extProps = new VkPhysicalDeviceSchedulingControlsPropertiesARM{};
+		extProps->sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_SCHEDULING_CONTROLS_PROPERTIES_ARM;
+		deviceProps2 = initDeviceProperties2(extProps);
+		vulkanContext.vkGetPhysicalDeviceProperties2KHR(handle, &deviceProps2);
+		pushProperty2(extension, { { "extension", "VK_ARM_scheduling_controls" }, { "name", "schedulingControlsFlags" }, { "value", extProps->schedulingControlsFlags } });
+		delete extProps;
+	}
 	if (extensionSupported("VK_ARM_shader_core_builtins")) {
 		const char* extension("VK_ARM_shader_core_builtins");
 		VkPhysicalDeviceShaderCoreBuiltinsPropertiesARM* extProps = new VkPhysicalDeviceShaderCoreBuiltinsPropertiesARM{};
@@ -994,6 +1003,16 @@ void VulkanDeviceInfoExtensions::readPhysicalProperties_NV() {
 		pushProperty2(extension, { { "extension", "VK_NV_device_generated_commands" }, { "name", "minIndirectCommandsBufferOffsetAlignment" }, { "value", extProps->minIndirectCommandsBufferOffsetAlignment } });
 		delete extProps;
 	}
+	if (extensionSupported("VK_NV_cuda_kernel_launch")) {
+		const char* extension("VK_NV_cuda_kernel_launch");
+		VkPhysicalDeviceCudaKernelLaunchPropertiesNV* extProps = new VkPhysicalDeviceCudaKernelLaunchPropertiesNV{};
+		extProps->sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_CUDA_KERNEL_LAUNCH_PROPERTIES_NV;
+		deviceProps2 = initDeviceProperties2(extProps);
+		vulkanContext.vkGetPhysicalDeviceProperties2KHR(handle, &deviceProps2);
+		pushProperty2(extension, { { "extension", "VK_NV_cuda_kernel_launch" }, { "name", "computeCapabilityMinor" }, { "value", extProps->computeCapabilityMinor } });
+		pushProperty2(extension, { { "extension", "VK_NV_cuda_kernel_launch" }, { "name", "computeCapabilityMajor" }, { "value", extProps->computeCapabilityMajor } });
+		delete extProps;
+	}
 	if (extensionSupported("VK_NV_fragment_shading_rate_enums")) {
 		const char* extension("VK_NV_fragment_shading_rate_enums");
 		VkPhysicalDeviceFragmentShadingRateEnumsPropertiesNV* extProps = new VkPhysicalDeviceFragmentShadingRateEnumsPropertiesNV{};
@@ -1201,6 +1220,15 @@ void VulkanDeviceInfoExtensions::readPhysicalFeatures_ARM() {
 		pushFeature2(extension, "rasterizationOrderColorAttachmentAccess", extFeatures->rasterizationOrderColorAttachmentAccess);
 		pushFeature2(extension, "rasterizationOrderDepthAttachmentAccess", extFeatures->rasterizationOrderDepthAttachmentAccess);
 		pushFeature2(extension, "rasterizationOrderStencilAttachmentAccess", extFeatures->rasterizationOrderStencilAttachmentAccess);
+		delete extFeatures;
+	}
+	if (extensionSupported("VK_ARM_scheduling_controls")) {
+		const char* extension("VK_ARM_scheduling_controls");
+		VkPhysicalDeviceSchedulingControlsFeaturesARM* extFeatures = new VkPhysicalDeviceSchedulingControlsFeaturesARM{};
+		extFeatures->sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_SCHEDULING_CONTROLS_FEATURES_ARM;
+		deviceFeatures2 = initDeviceFeatures2(extFeatures);
+		vulkanContext.vkGetPhysicalDeviceFeatures2KHR(handle, &deviceFeatures2);
+		pushFeature2(extension, "schedulingControls", extFeatures->schedulingControls);
 		delete extFeatures;
 	}
 	if (extensionSupported("VK_ARM_shader_core_builtins")) {
@@ -2086,6 +2114,18 @@ void VulkanDeviceInfoExtensions::readPhysicalFeatures_HUAWEI() {
 		delete extFeatures;
 	}
 }
+void VulkanDeviceInfoExtensions::readPhysicalFeatures_IMG() {
+	VkPhysicalDeviceFeatures2 deviceFeatures2{};
+	if (extensionSupported("VK_IMG_relaxed_line_rasterization")) {
+		const char* extension("VK_IMG_relaxed_line_rasterization");
+		VkPhysicalDeviceRelaxedLineRasterizationFeaturesIMG* extFeatures = new VkPhysicalDeviceRelaxedLineRasterizationFeaturesIMG{};
+		extFeatures->sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_RELAXED_LINE_RASTERIZATION_FEATURES_IMG;
+		deviceFeatures2 = initDeviceFeatures2(extFeatures);
+		vulkanContext.vkGetPhysicalDeviceFeatures2KHR(handle, &deviceFeatures2);
+		pushFeature2(extension, "relaxedLineRasterization", extFeatures->relaxedLineRasterization);
+		delete extFeatures;
+	}
+}
 void VulkanDeviceInfoExtensions::readPhysicalFeatures_INTEL() {
 	VkPhysicalDeviceFeatures2 deviceFeatures2{};
 	if (extensionSupported("VK_INTEL_shader_integer_functions2")) {
@@ -2638,6 +2678,15 @@ void VulkanDeviceInfoExtensions::readPhysicalFeatures_NV() {
 		pushFeature2(extension, "diagnosticsConfig", extFeatures->diagnosticsConfig);
 		delete extFeatures;
 	}
+	if (extensionSupported("VK_NV_cuda_kernel_launch")) {
+		const char* extension("VK_NV_cuda_kernel_launch");
+		VkPhysicalDeviceCudaKernelLaunchFeaturesNV* extFeatures = new VkPhysicalDeviceCudaKernelLaunchFeaturesNV{};
+		extFeatures->sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_CUDA_KERNEL_LAUNCH_FEATURES_NV;
+		deviceFeatures2 = initDeviceFeatures2(extFeatures);
+		vulkanContext.vkGetPhysicalDeviceFeatures2KHR(handle, &deviceFeatures2);
+		pushFeature2(extension, "cudaKernelLaunchFeatures", extFeatures->cudaKernelLaunchFeatures);
+		delete extFeatures;
+	}
 	if (extensionSupported("VK_NV_fragment_shading_rate_enums")) {
 		const char* extension("VK_NV_fragment_shading_rate_enums");
 		VkPhysicalDeviceFragmentShadingRateEnumsFeaturesNV* extFeatures = new VkPhysicalDeviceFragmentShadingRateEnumsFeaturesNV{};
@@ -2894,6 +2943,7 @@ void VulkanDeviceInfoExtensions::readExtendedFeatures() {
     readPhysicalFeatures_ARM();
     readPhysicalFeatures_EXT();
     readPhysicalFeatures_HUAWEI();
+    readPhysicalFeatures_IMG();
     readPhysicalFeatures_INTEL();
     readPhysicalFeatures_KHR();
     readPhysicalFeatures_NV();
