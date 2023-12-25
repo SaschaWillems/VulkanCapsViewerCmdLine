@@ -11,6 +11,7 @@ ARM
 VK_ARM_rasterization_order_attachment_access
 VK_ARM_shader_core_properties
 VK_ARM_scheduling_controls
+VK_ARM_render_pass_striped
 VK_ARM_shader_core_builtins
 EXT
 VK_EXT_transform_feedback
@@ -156,6 +157,9 @@ VK_KHR_maintenance4
 VK_KHR_maintenance5
 VK_KHR_ray_tracing_position_fetch
 VK_KHR_cooperative_matrix
+VK_KHR_video_maintenance1
+VK_KHR_vertex_attribute_divisor
+VK_KHR_maintenance6
 MSFT
 VK_MSFT_layered_driver
 NV
@@ -188,6 +192,7 @@ VK_NV_linear_color_attachment
 VK_NV_optical_flow
 VK_NV_ray_tracing_invocation_reorder
 VK_NV_extended_sparse_address_space
+VK_NV_per_stage_descriptor_set
 VK_NV_descriptor_pool_overallocation
 NVX
 VK_NVX_multiview_per_view_attributes
