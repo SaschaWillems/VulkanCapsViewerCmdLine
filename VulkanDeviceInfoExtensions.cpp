@@ -357,8 +357,8 @@ void VulkanDeviceInfoExtensions::readPhysicalProperties_EXT() {
 	}
 	if (extensionSupported("VK_EXT_line_rasterization")) {
 		const char* extension("VK_EXT_line_rasterization");
-		VkPhysicalDeviceLineRasterizationPropertiesEXT* extProps = new VkPhysicalDeviceLineRasterizationPropertiesEXT{};
-		extProps->sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_LINE_RASTERIZATION_PROPERTIES_EXT;
+		VkPhysicalDeviceLineRasterizationPropertiesKHR* extProps = new VkPhysicalDeviceLineRasterizationPropertiesKHR{};
+		extProps->sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_LINE_RASTERIZATION_PROPERTIES_KHR;
 		deviceProps2 = initDeviceProperties2(extProps);
 		vulkanContext.vkGetPhysicalDeviceProperties2KHR(handle, &deviceProps2);
 		pushProperty2(extension, { { "extension", "VK_EXT_line_rasterization" }, { "name", "lineSubPixelPrecisionBits" }, { "value", extProps->lineSubPixelPrecisionBits } });
@@ -381,10 +381,14 @@ void VulkanDeviceInfoExtensions::readPhysicalProperties_EXT() {
 		std::vector<VkImageLayout> copyDstLayouts(extProps->copyDstLayoutCount);
 		extProps->pCopySrcLayouts = copySrcLayouts.data();
 		extProps->pCopyDstLayouts = copyDstLayouts.data();
+	}
+	if (extensionSupported("VK_EXT_map_memory_placed")) {
+		const char* extension("VK_EXT_map_memory_placed");
+		VkPhysicalDeviceMapMemoryPlacedPropertiesEXT* extProps = new VkPhysicalDeviceMapMemoryPlacedPropertiesEXT{};
+		extProps->sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_MAP_MEMORY_PLACED_PROPERTIES_EXT;
+		deviceProps2 = initDeviceProperties2(extProps);
 		vulkanContext.vkGetPhysicalDeviceProperties2KHR(handle, &deviceProps2);
-		// Store them as serialized values
-		pushProperty2(extension, { { "extension", "VK_EXT_host_image_copy" }, { "name", "pCopySrcLayouts" }, { "value", copySrcLayouts } });
-		pushProperty2(extension, { { "extension", "VK_EXT_host_image_copy" }, { "name", "pCopyDstLayouts" }, { "value", copyDstLayouts } });
+		pushProperty2(extension, { { "extension", "VK_EXT_map_memory_placed" }, { "name", "minPlacedMemoryMapAlignment" }, { "value", extProps->minPlacedMemoryMapAlignment } });
 		delete extProps;
 	}
 	if (extensionSupported("VK_EXT_texel_buffer_alignment")) {
@@ -1397,8 +1401,8 @@ void VulkanDeviceInfoExtensions::readPhysicalFeatures_EXT() {
 	}
 	if (extensionSupported("VK_EXT_vertex_attribute_divisor")) {
 		const char* extension("VK_EXT_vertex_attribute_divisor");
-		VkPhysicalDeviceVertexAttributeDivisorFeaturesEXT* extFeatures = new VkPhysicalDeviceVertexAttributeDivisorFeaturesEXT{};
-		extFeatures->sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_VERTEX_ATTRIBUTE_DIVISOR_FEATURES_EXT;
+		VkPhysicalDeviceVertexAttributeDivisorFeaturesKHR* extFeatures = new VkPhysicalDeviceVertexAttributeDivisorFeaturesKHR{};
+		extFeatures->sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_VERTEX_ATTRIBUTE_DIVISOR_FEATURES_KHR;
 		deviceFeatures2 = initDeviceFeatures2(extFeatures);
 		vulkanContext.vkGetPhysicalDeviceFeatures2KHR(handle, &deviceFeatures2);
 		pushFeature2(extension, "vertexAttributeInstanceRateDivisor", extFeatures->vertexAttributeInstanceRateDivisor);
@@ -1497,8 +1501,8 @@ void VulkanDeviceInfoExtensions::readPhysicalFeatures_EXT() {
 	}
 	if (extensionSupported("VK_EXT_line_rasterization")) {
 		const char* extension("VK_EXT_line_rasterization");
-		VkPhysicalDeviceLineRasterizationFeaturesEXT* extFeatures = new VkPhysicalDeviceLineRasterizationFeaturesEXT{};
-		extFeatures->sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_LINE_RASTERIZATION_FEATURES_EXT;
+		VkPhysicalDeviceLineRasterizationFeaturesKHR* extFeatures = new VkPhysicalDeviceLineRasterizationFeaturesKHR{};
+		extFeatures->sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_LINE_RASTERIZATION_FEATURES_KHR;
 		deviceFeatures2 = initDeviceFeatures2(extFeatures);
 		vulkanContext.vkGetPhysicalDeviceFeatures2KHR(handle, &deviceFeatures2);
 		pushFeature2(extension, "rectangularLines", extFeatures->rectangularLines);
@@ -1540,8 +1544,8 @@ void VulkanDeviceInfoExtensions::readPhysicalFeatures_EXT() {
 	}
 	if (extensionSupported("VK_EXT_index_type_uint8")) {
 		const char* extension("VK_EXT_index_type_uint8");
-		VkPhysicalDeviceIndexTypeUint8FeaturesEXT* extFeatures = new VkPhysicalDeviceIndexTypeUint8FeaturesEXT{};
-		extFeatures->sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_INDEX_TYPE_UINT8_FEATURES_EXT;
+		VkPhysicalDeviceIndexTypeUint8FeaturesKHR* extFeatures = new VkPhysicalDeviceIndexTypeUint8FeaturesKHR{};
+		extFeatures->sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_INDEX_TYPE_UINT8_FEATURES_KHR;
 		deviceFeatures2 = initDeviceFeatures2(extFeatures);
 		vulkanContext.vkGetPhysicalDeviceFeatures2KHR(handle, &deviceFeatures2);
 		pushFeature2(extension, "indexTypeUint8", extFeatures->indexTypeUint8);
@@ -1563,6 +1567,17 @@ void VulkanDeviceInfoExtensions::readPhysicalFeatures_EXT() {
 		deviceFeatures2 = initDeviceFeatures2(extFeatures);
 		vulkanContext.vkGetPhysicalDeviceFeatures2KHR(handle, &deviceFeatures2);
 		pushFeature2(extension, "hostImageCopy", extFeatures->hostImageCopy);
+		delete extFeatures;
+	}
+	if (extensionSupported("VK_EXT_map_memory_placed")) {
+		const char* extension("VK_EXT_map_memory_placed");
+		VkPhysicalDeviceMapMemoryPlacedFeaturesEXT* extFeatures = new VkPhysicalDeviceMapMemoryPlacedFeaturesEXT{};
+		extFeatures->sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_MAP_MEMORY_PLACED_FEATURES_EXT;
+		deviceFeatures2 = initDeviceFeatures2(extFeatures);
+		vulkanContext.vkGetPhysicalDeviceFeatures2KHR(handle, &deviceFeatures2);
+		pushFeature2(extension, "memoryMapPlaced", extFeatures->memoryMapPlaced);
+		pushFeature2(extension, "memoryMapRangePlaced", extFeatures->memoryMapRangePlaced);
+		pushFeature2(extension, "memoryUnmapReserve", extFeatures->memoryUnmapReserve);
 		delete extFeatures;
 	}
 	if (extensionSupported("VK_EXT_shader_atomic_float2")) {
@@ -2963,6 +2978,33 @@ void VulkanDeviceInfoExtensions::readPhysicalFeatures_NV() {
 		deviceFeatures2 = initDeviceFeatures2(extFeatures);
 		vulkanContext.vkGetPhysicalDeviceFeatures2KHR(handle, &deviceFeatures2);
 		pushFeature2(extension, "descriptorPoolOverallocation", extFeatures->descriptorPoolOverallocation);
+		delete extFeatures;
+	}
+	if (extensionSupported("VK_NV_raw_access_chains")) {
+		const char* extension("VK_NV_raw_access_chains");
+		VkPhysicalDeviceRawAccessChainsFeaturesNV* extFeatures = new VkPhysicalDeviceRawAccessChainsFeaturesNV{};
+		extFeatures->sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_RAW_ACCESS_CHAINS_FEATURES_NV;
+		deviceFeatures2 = initDeviceFeatures2(extFeatures);
+		vulkanContext.vkGetPhysicalDeviceFeatures2KHR(handle, &deviceFeatures2);
+		pushFeature2(extension, "shaderRawAccessChains", extFeatures->shaderRawAccessChains);
+		delete extFeatures;
+	}
+	if (extensionSupported("VK_NV_shader_atomic_float16_vector")) {
+		const char* extension("VK_NV_shader_atomic_float16_vector");
+		VkPhysicalDeviceShaderAtomicFloat16VectorFeaturesNV* extFeatures = new VkPhysicalDeviceShaderAtomicFloat16VectorFeaturesNV{};
+		extFeatures->sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_SHADER_ATOMIC_FLOAT16_VECTOR_FEATURES_NV;
+		deviceFeatures2 = initDeviceFeatures2(extFeatures);
+		vulkanContext.vkGetPhysicalDeviceFeatures2KHR(handle, &deviceFeatures2);
+		pushFeature2(extension, "shaderFloat16VectorAtomics", extFeatures->shaderFloat16VectorAtomics);
+		delete extFeatures;
+	}
+	if (extensionSupported("VK_NV_ray_tracing_validation")) {
+		const char* extension("VK_NV_ray_tracing_validation");
+		VkPhysicalDeviceRayTracingValidationFeaturesNV* extFeatures = new VkPhysicalDeviceRayTracingValidationFeaturesNV{};
+		extFeatures->sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_RAY_TRACING_VALIDATION_FEATURES_NV;
+		deviceFeatures2 = initDeviceFeatures2(extFeatures);
+		vulkanContext.vkGetPhysicalDeviceFeatures2KHR(handle, &deviceFeatures2);
+		pushFeature2(extension, "rayTracingValidation", extFeatures->rayTracingValidation);
 		delete extFeatures;
 	}
 }
