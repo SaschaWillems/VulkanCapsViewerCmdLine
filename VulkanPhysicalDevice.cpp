@@ -229,7 +229,7 @@ nlohmann::json VulkanPhysicalDevice::getFormats()
             { format.format,
                 {
                     { "bufferFeatures", std::to_string(format.properties.bufferFeatures) },
-                    { "linearTilingFeatures", formatstd::to_string(.properties.linearTilingFeatures) },
+                    { "linearTilingFeatures", std::to_string(format.properties.linearTilingFeatures) },
                     { "optimalTilingFeatures", std::to_string(format.properties.optimalTilingFeatures) },
                     { "supported", format.supported }
                 }
