@@ -1,7 +1,7 @@
 /*
  * Vulkan hardware capability viewer command line version
  *
- * Copyright (C) 2022 by Sascha Willems (www.saschawillems.de)
+ * Copyright (C) 2022-2024 by Sascha Willems (www.saschawillems.de)
  *
  * This code is free software, you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -228,9 +228,9 @@ nlohmann::json VulkanPhysicalDevice::getFormats()
         jsonArray.push_back(
             { format.format,
                 {
-                    { "bufferFeatures", format.properties.bufferFeatures },
-                    { "linearTilingFeatures", format.properties.linearTilingFeatures },
-                    { "optimalTilingFeatures", format.properties.optimalTilingFeatures },
+                    { "bufferFeatures", std::to_string(format.properties.bufferFeatures) },
+                    { "linearTilingFeatures", formatstd::to_string(.properties.linearTilingFeatures) },
+                    { "optimalTilingFeatures", std::to_string(format.properties.optimalTilingFeatures) },
                     { "supported", format.supported }
                 }
             }

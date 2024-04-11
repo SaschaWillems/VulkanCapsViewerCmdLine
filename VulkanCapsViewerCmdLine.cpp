@@ -21,8 +21,8 @@
 
 VulkanInstance instance;
 
-const std::string appVersion = "1.0";
-const std::string reportVersion = "3.2";
+const std::string appVersion = "1.1";
+const std::string reportVersion = "3.3";
 
 struct AdditionalReportData {
     std::string submitter = "";
