@@ -3,6 +3,7 @@ VK_AMD_shader_core_properties
 VK_AMD_shader_core_properties2
 VK_AMD_device_coherent_memory
 VK_AMD_shader_early_and_late_fragment_tests
+VK_AMD_anti_lag
 AMDX
 VK_AMDX_shader_enqueue
 ANDROID
@@ -72,6 +73,7 @@ VK_EXT_physical_device_drm
 VK_EXT_device_address_binding_report
 VK_EXT_depth_clip_control
 VK_EXT_primitive_topology_list_restart
+VK_EXT_present_mode_fifo_latest_ready
 VK_EXT_pipeline_properties
 VK_EXT_frame_boundary
 VK_EXT_multisampled_render_to_single_sampled
@@ -104,10 +106,13 @@ VK_EXT_pipeline_library_group_handles
 VK_EXT_dynamic_rendering_unused_attachments
 VK_EXT_attachment_feedback_loop_dynamic_state
 VK_EXT_shader_replicated_composites
+VK_EXT_device_generated_commands
+VK_EXT_depth_clamp_control
 HUAWEI
 VK_HUAWEI_subpass_shading
 VK_HUAWEI_invocation_mask
 VK_HUAWEI_cluster_culling_shader
+VK_HUAWEI_hdr_vivid
 IMG
 VK_IMG_relaxed_line_rasterization
 INTEL
@@ -163,7 +168,9 @@ VK_KHR_shader_subgroup_rotate
 VK_KHR_shader_maximal_reconvergence
 VK_KHR_maintenance5
 VK_KHR_ray_tracing_position_fetch
+VK_KHR_pipeline_binary
 VK_KHR_cooperative_matrix
+VK_KHR_compute_shader_derivatives
 VK_KHR_video_maintenance1
 VK_KHR_vertex_attribute_divisor
 VK_KHR_shader_float_controls2
@@ -210,8 +217,10 @@ VK_NV_extended_sparse_address_space
 VK_NV_per_stage_descriptor_set
 VK_NV_descriptor_pool_overallocation
 VK_NV_raw_access_chains
+VK_NV_command_buffer_inheritance
 VK_NV_shader_atomic_float16_vector
 VK_NV_ray_tracing_validation
+VK_NV_cooperative_matrix2
 NVX
 VK_NVX_multiview_per_view_attributes
 QCOM
