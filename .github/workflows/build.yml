@@ -11,7 +11,7 @@ on:
 jobs:
   build_ubuntu_x11:
     name: Build Ubuntu
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
 
     steps:
       - uses: actions/checkout@v3
@@ -43,20 +43,20 @@ jobs:
         id: cache-vulkan-sdk
         uses: actions/cache@v3
         with:
-          path: "C:\\VulkanSDK\\1.3.231.1"
-          key: vulkan-sdk-1.3.231.1
+          path: "C:\\VulkanSDK\\1.4.328.1"
+          key: vulkan-sdk-1.4.328.1
 
       - name: Install VulkanSDK
         if: steps.cache-vulkan-sdk.outputs.cache-hit != 'true'
         run: |
-            Invoke-WebRequest -Uri "https://sdk.lunarg.com/sdk/download/1.3.231.1/windows/VulkanSDK-1.3.231.1-Installer.exe" -OutFile VulkanSDK.exe
+            Invoke-WebRequest -Uri "https://sdk.lunarg.com/sdk/download/1.4.328.1/windows/vulkansdk-windows-X64-1.4.328.1.exe" -OutFile VulkanSDK.exe
             $installer = Start-Process -FilePath VulkanSDK.exe -Wait -Verb runAs -PassThru -ArgumentList @("--accept-licenses --default-answer --confirm-command install");            
             $installer.WaitForExit();
 
       - name: Build
         env:
           TARGET_PLATFORM: windows
-          VULKAN_SDK: "C:\\VulkanSDK\\1.3.231.1"
+          VULKAN_SDK: "C:\\VulkanSDK\\1.4.328.1"
         run: |
           cmake .
           cmake --build .
